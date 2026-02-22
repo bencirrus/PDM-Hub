@@ -1,0 +1,1676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0a0a14">
+<meta name="description" content="PDM Partner Intelligence Hub — Co-sell pipeline, QBR governance, and AI readiness in one place.">
+<title>PDM Partner Intelligence Hub</title>
+<link rel="manifest" href="#" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;1,300&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --bg: #07070f;
+    --surface: #0f0f1e;
+    --surface2: #161628;
+    --border: rgba(255,255,255,0.07);
+    --border-bright: rgba(255,255,255,0.14);
+    --accent: #0078d4;
+    --accent2: #50e6ff;
+    --accent3: #7fba00;
+    --accent-warn: #ffb900;
+    --accent-danger: #e74c3c;
+    --text: #f0f0f8;
+    --text-muted: rgba(240,240,248,0.45);
+    --text-dim: rgba(240,240,248,0.25);
+    --green: #7fba00;
+    --amber: #ffb900;
+    --red: #e74c3c;
+    --font-display: 'Syne', sans-serif;
+    --font-mono: 'DM Mono', monospace;
+    --font-serif: 'Instrument Serif', serif;
+    --radius: 12px;
+    --radius-sm: 8px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-display);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* BACKGROUND ATMOSPHERE */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 50% at 10% 0%, rgba(0,120,212,0.12) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 40% at 90% 100%, rgba(80,230,255,0.07) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 60% at 50% 50%, rgba(127,186,0,0.04) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* GRID TEXTURE */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* NAV */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 32px;
+    height: 64px;
+    background: rgba(7,7,15,0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text);
+  }
+
+  .nav-logo .logo-mark {
+    width: 28px;
+    height: 28px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3px;
+  }
+
+  .logo-mark span {
+    display: block;
+    border-radius: 2px;
+  }
+  .logo-mark span:nth-child(1) { background: #f25022; }
+  .logo-mark span:nth-child(2) { background: #7fba00; }
+  .logo-mark span:nth-child(3) { background: #00a4ef; }
+  .logo-mark span:nth-child(4) { background: #ffb900; }
+
+  .nav-tabs {
+    display: flex;
+    gap: 4px;
+  }
+
+  .nav-tab {
+    padding: 6px 16px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border: none;
+    background: transparent;
+    color: var(--text-muted);
+    transition: all 0.2s;
+  }
+
+  .nav-tab:hover { color: var(--text); background: var(--surface2); }
+  .nav-tab.active { color: var(--accent2); background: rgba(80,230,255,0.08); }
+
+  .nav-badge {
+    font-size: 10px;
+    font-family: var(--font-mono);
+    color: var(--accent2);
+    opacity: 0.7;
+  }
+
+  /* MAIN */
+  main {
+    position: relative;
+    z-index: 1;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 40px 32px;
+  }
+
+  /* SECTIONS */
+  .section { display: none; animation: fadeUp 0.4s ease both; }
+  .section.active { display: block; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* PAGE HEADER */
+  .page-header {
+    margin-bottom: 40px;
+  }
+
+  .page-header .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent2);
+    margin-bottom: 12px;
+  }
+
+  .page-header h1 {
+    font-size: clamp(28px, 4vw, 48px);
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+
+  .page-header h1 em {
+    font-family: var(--font-serif);
+    font-style: italic;
+    color: var(--accent2);
+    font-weight: 400;
+  }
+
+  .page-header p {
+    margin-top: 12px;
+    color: var(--text-muted);
+    font-size: 15px;
+    max-width: 600px;
+    line-height: 1.6;
+    font-weight: 400;
+  }
+
+  /* STATS ROW */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px 20px;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+
+  .stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--accent-color, var(--accent));
+    opacity: 0.8;
+  }
+
+  .stat-card:hover { border-color: var(--border-bright); }
+
+  .stat-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+  }
+
+  .stat-value {
+    font-size: 32px;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1;
+  }
+
+  .stat-sub {
+    margin-top: 6px;
+    font-size: 12px;
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+  }
+
+  /* CARD */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px;
+    margin-bottom: 20px;
+  }
+
+  .card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+  }
+
+  .card-title {
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text);
+  }
+
+  .card-title span {
+    display: block;
+    font-weight: 400;
+    font-size: 12px;
+    color: var(--text-muted);
+    text-transform: none;
+    letter-spacing: 0;
+    margin-top: 3px;
+  }
+
+  /* TWO COLUMN */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  @media (max-width: 900px) { .two-col { grid-template-columns: 1fr; } }
+
+  /* RAG BADGE */
+  .rag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 3px 10px;
+    border-radius: 100px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.06em;
+  }
+
+  .rag::before {
+    content: '';
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: currentColor;
+    flex-shrink: 0;
+  }
+
+  .rag-green { color: var(--green); background: rgba(127,186,0,0.1); }
+  .rag-amber { color: var(--amber); background: rgba(255,185,0,0.1); }
+  .rag-red { color: var(--red); background: rgba(231,76,60,0.1); }
+
+  /* SOLUTION AREA PILLS */
+  .solution-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 24px;
+  }
+
+  .solution-pill {
+    padding: 6px 14px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: all 0.2s;
+  }
+
+  .pill-infra { background: rgba(0,120,212,0.12); color: #50b3f0; border-color: rgba(0,120,212,0.25); }
+  .pill-data  { background: rgba(127,186,0,0.12); color: #a3d44a; border-color: rgba(127,186,0,0.25); }
+  .pill-mw    { background: rgba(80,230,255,0.10); color: #50e6ff; border-color: rgba(80,230,255,0.2); }
+  .pill-biz   { background: rgba(255,185,0,0.10); color: #ffb900; border-color: rgba(255,185,0,0.2); }
+  .pill-sec   { background: rgba(231,76,60,0.10); color: #e74c3c; border-color: rgba(231,76,60,0.2); }
+
+  .solution-pill.active, .solution-pill:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+  }
+
+  /* DEAL TABLE */
+  .deal-table { width: 100%; border-collapse: collapse; }
+
+  .deal-table th {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    text-align: left;
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .deal-table td {
+    padding: 14px 12px;
+    font-size: 13px;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    vertical-align: middle;
+  }
+
+  .deal-table tr:last-child td { border-bottom: none; }
+  .deal-table tr:hover td { background: rgba(255,255,255,0.02); }
+
+  .deal-name { font-weight: 600; }
+  .deal-value { font-family: var(--font-mono); font-size: 12px; color: var(--accent2); }
+  .deal-stage {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    padding: 3px 8px;
+    border-radius: 4px;
+    background: var(--surface2);
+    color: var(--text-muted);
+    letter-spacing: 0.06em;
+  }
+
+  /* PROGRESS BAR */
+  .progress-wrap {
+    margin-bottom: 20px;
+  }
+
+  .progress-label {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    font-size: 12px;
+  }
+
+  .progress-label .name { color: var(--text); font-weight: 600; }
+  .progress-label .pct { font-family: var(--font-mono); color: var(--text-muted); }
+
+  .progress-track {
+    height: 6px;
+    background: var(--surface2);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    border-radius: 3px;
+    transition: width 1s cubic-bezier(0.4,0,0.2,1);
+  }
+
+  /* READINESS SECTION */
+  .readiness-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .readiness-card {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .readiness-card:hover {
+    border-color: var(--border-bright);
+    transform: translateY(-2px);
+  }
+
+  .readiness-card.selected {
+    border-color: var(--accent);
+    background: rgba(0,120,212,0.08);
+  }
+
+  .readiness-icon {
+    font-size: 28px;
+    margin-bottom: 12px;
+  }
+
+  .readiness-name {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+
+  .readiness-desc {
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 1.5;
+    font-weight: 400;
+  }
+
+  .readiness-score {
+    position: absolute;
+    top: 16px; right: 16px;
+    font-family: var(--font-mono);
+    font-size: 22px;
+    font-weight: 300;
+  }
+
+  /* ASSESSMENT SLIDERS */
+  .assessment-area {
+    margin-bottom: 24px;
+  }
+
+  .assessment-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+
+  .assessment-label .dim-name {
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .assessment-label .dim-score {
+    font-family: var(--font-mono);
+    font-size: 24px;
+    color: var(--accent2);
+  }
+
+  input[type=range] {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 4px;
+    border-radius: 2px;
+    background: var(--surface2);
+    outline: none;
+    margin-bottom: 8px;
+  }
+
+  input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    background: var(--accent2);
+    cursor: pointer;
+    box-shadow: 0 0 0 3px rgba(80,230,255,0.2);
+    transition: box-shadow 0.2s;
+  }
+
+  input[type=range]::-webkit-slider-thumb:hover {
+    box-shadow: 0 0 0 6px rgba(80,230,255,0.2);
+  }
+
+  .dim-hints {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text-dim);
+    letter-spacing: 0.06em;
+  }
+
+  /* TIER BADGE */
+  .tier-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 20px;
+    border-radius: var(--radius-sm);
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 0.04em;
+  }
+
+  .tier-foundational { background: rgba(231,76,60,0.12); color: #e74c3c; border: 1px solid rgba(231,76,60,0.25); }
+  .tier-developing { background: rgba(255,185,0,0.12); color: #ffb900; border: 1px solid rgba(255,185,0,0.25); }
+  .tier-advanced { background: rgba(127,186,0,0.12); color: #7fba00; border: 1px solid rgba(127,186,0,0.25); }
+
+  /* ACTIONS LIST */
+  .action-item {
+    display: flex;
+    gap: 14px;
+    padding: 16px;
+    background: var(--surface2);
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    margin-bottom: 10px;
+    align-items: flex-start;
+    transition: border-color 0.2s;
+  }
+
+  .action-item:hover { border-color: var(--border-bright); }
+
+  .action-icon {
+    width: 36px; height: 36px;
+    border-radius: 8px;
+    background: rgba(0,120,212,0.15);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .action-body { flex: 1; }
+  .action-title { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
+  .action-desc { font-size: 12px; color: var(--text-muted); line-height: 1.4; font-weight: 400; }
+
+  .action-tag {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    background: var(--surface);
+    color: var(--accent2);
+    margin-left: auto;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  /* QBR */
+  .qbr-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  @media (max-width: 768px) { .qbr-grid { grid-template-columns: 1fr; } }
+
+  .qbr-block {
+    background: var(--surface2);
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    padding: 20px;
+  }
+
+  .qbr-block-title {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 14px;
+  }
+
+  .qbr-metric {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    font-size: 13px;
+  }
+  .qbr-metric:last-child { border-bottom: none; }
+  .qbr-metric .label { color: var(--text-muted); font-size: 12px; }
+  .qbr-metric .value { font-family: var(--font-mono); font-size: 13px; }
+
+  /* BTN */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    border-radius: var(--radius-sm);
+    font-family: var(--font-display);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: white;
+  }
+  .btn-primary:hover { background: #106ebe; transform: translateY(-1px); }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--text-muted);
+    border: 1px solid var(--border-bright);
+  }
+  .btn-ghost:hover { color: var(--text); border-color: var(--text-muted); }
+
+  /* DIVIDER */
+  .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 28px 0;
+  }
+
+  /* INPUT */
+  input[type=text], select, textarea {
+    background: var(--surface2);
+    border: 1px solid var(--border-bright);
+    border-radius: var(--radius-sm);
+    color: var(--text);
+    font-family: var(--font-display);
+    font-size: 13px;
+    padding: 10px 14px;
+    outline: none;
+    transition: border-color 0.2s;
+    width: 100%;
+  }
+
+  input[type=text]:focus, select:focus, textarea:focus {
+    border-color: var(--accent);
+  }
+
+  select option { background: var(--surface2); }
+
+  .form-group { margin-bottom: 16px; }
+  .form-label {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+  }
+
+  /* EXPORT BANNER */
+  .export-banner {
+    background: linear-gradient(135deg, rgba(0,120,212,0.15), rgba(80,230,255,0.08));
+    border: 1px solid rgba(0,120,212,0.3);
+    border-radius: var(--radius);
+    padding: 24px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .export-banner .text .title { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+  .export-banner .text .desc { font-size: 13px; color: var(--text-muted); font-weight: 400; }
+
+  /* TOAST */
+  .toast {
+    position: fixed;
+    bottom: 32px;
+    right: 32px;
+    background: var(--surface);
+    border: 1px solid var(--border-bright);
+    border-radius: var(--radius-sm);
+    padding: 14px 20px;
+    font-size: 13px;
+    z-index: 999;
+    transform: translateY(100px);
+    opacity: 0;
+    transition: all 0.3s;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  }
+
+  .toast.show {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--surface2); border-radius: 3px; }
+
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">
+    <div class="logo-mark">
+      <span></span><span></span><span></span><span></span>
+    </div>
+    PDM Partner Hub
+    <span class="nav-badge">// SME&C</span>
+  </div>
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="showSection('pipeline')">Pipeline</button>
+    <button class="nav-tab" onclick="showSection('qbr')">QBR</button>
+    <button class="nav-tab" onclick="showSection('readiness')">AI Readiness</button>
+    <button class="nav-tab" onclick="showSection('gtm')">GTM Planner</button>
+  </div>
+</nav>
+
+<main>
+
+  <!-- ============ PIPELINE ============ -->
+  <div class="section active" id="section-pipeline">
+    <div class="page-header">
+      <div class="eyebrow">// Co-sell Intelligence</div>
+      <h1>Partner <em>Pipeline</em> Dashboard</h1>
+      <p>Track co-sell opportunities, consumption targets, and deal velocity across all SME&C solution areas.</p>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-card" style="--accent-color: #0078d4;">
+        <div class="stat-label">Total Pipeline</div>
+        <div class="stat-value" style="color:#50b3f0;">$24.7M</div>
+        <div class="stat-sub">▲ 18% vs last quarter</div>
+      </div>
+      <div class="stat-card" style="--accent-color: #7fba00;">
+        <div class="stat-label">Deals in Co-sell</div>
+        <div class="stat-value" style="color:#a3d44a;">34</div>
+        <div class="stat-sub">12 requiring action</div>
+      </div>
+      <div class="stat-card" style="--accent-color: #ffb900;">
+        <div class="stat-label">Quota Attainment</div>
+        <div class="stat-value" style="color:#ffb900;">71%</div>
+        <div class="stat-sub">Target: 100% by Q-end</div>
+      </div>
+      <div class="stat-card" style="--accent-color: #50e6ff;">
+        <div class="stat-label">Consumption ARR</div>
+        <div class="stat-value" style="color:#50e6ff;">$8.2M</div>
+        <div class="stat-sub">Gap: $1.8M to target</div>
+      </div>
+      <div class="stat-card" style="--accent-color: #e74c3c;">
+        <div class="stat-label">Escalations Open</div>
+        <div class="stat-value" style="color:#e74c3c;">3</div>
+        <div class="stat-sub">2 critical / 1 standard</div>
+      </div>
+    </div>
+
+    <!-- Solution Area Filter -->
+    <div class="solution-pills">
+      <div class="solution-pill pill-infra active" onclick="filterPipeline(this,'all')">All Areas</div>
+      <div class="solution-pill pill-infra" onclick="filterPipeline(this,'infra')">App & Infrastructure</div>
+      <div class="solution-pill pill-data" onclick="filterPipeline(this,'data')">Data & AI</div>
+      <div class="solution-pill pill-mw" onclick="filterPipeline(this,'mw')">Modern Workplace</div>
+      <div class="solution-pill pill-biz" onclick="filterPipeline(this,'biz')">Business Applications</div>
+      <div class="solution-pill pill-sec" onclick="filterPipeline(this,'sec')">Security</div>
+    </div>
+
+    <div class="two-col">
+      <!-- Deal Table -->
+      <div class="card" style="grid-column: 1 / -1;">
+        <div class="card-header">
+          <div class="card-title">Active Co-Sell Deals
+            <span>Live pipeline — click any deal to view detail</span>
+          </div>
+          <button class="btn btn-ghost" onclick="addDealModal()">+ Add Deal</button>
+        </div>
+        <table class="deal-table" id="deal-table">
+          <thead>
+            <tr>
+              <th>Deal Name</th>
+              <th>Solution Area</th>
+              <th>Partner</th>
+              <th>Value (ARR)</th>
+              <th>Stage</th>
+              <th>Close Date</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="deal-tbody">
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Consumption by Solution Area -->
+    <div class="two-col">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Consumption vs Target
+            <span>By solution area — current quarter</span>
+          </div>
+        </div>
+        <div id="consumption-bars"></div>
+      </div>
+
+      <!-- Deal Form -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Log New Co-Sell Deal
+            <span>Capture opportunity details</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Deal Name</label>
+          <input type="text" id="new-deal-name" placeholder="e.g. Avanade — Contoso M365 Migration">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Solution Area</label>
+          <select id="new-deal-area">
+            <option value="infra">App & Infrastructure</option>
+            <option value="data">Data & AI</option>
+            <option value="mw">Modern Workplace</option>
+            <option value="biz">Business Applications</option>
+            <option value="sec">Security</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">ARR Value ($)</label>
+          <input type="text" id="new-deal-value" placeholder="e.g. 450000">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Stage</label>
+          <select id="new-deal-stage">
+            <option>Prospect</option>
+            <option>Qualified</option>
+            <option>Proposal</option>
+            <option>Negotiation</option>
+            <option>Closed Won</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">RAG Status</label>
+          <select id="new-deal-rag">
+            <option value="green">Green — On Track</option>
+            <option value="amber">Amber — At Risk</option>
+            <option value="red">Red — Blocked</option>
+          </select>
+        </div>
+        <button class="btn btn-primary" onclick="addDeal()">Add to Pipeline →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ QBR ============ -->
+  <div class="section" id="section-qbr">
+    <div class="page-header">
+      <div class="eyebrow">// Governance & Review</div>
+      <h1>QBR <em>Command Centre</em></h1>
+      <p>Drive quarterly business reviews with structured execution tracking, gap analysis, and exec-ready output across all solution areas.</p>
+    </div>
+
+    <div class="qbr-grid">
+      <div class="qbr-block">
+        <div class="qbr-block-title">Revenue & Pipeline</div>
+        <div class="qbr-metric"><span class="label">Pipeline Coverage</span><span class="value" style="color:#50e6ff;">3.2x</span></div>
+        <div class="qbr-metric"><span class="label">Q Revenue</span><span class="value" style="color:#a3d44a;">$6.1M</span></div>
+        <div class="qbr-metric"><span class="label">vs Target</span><span class="value" style="color:#ffb900;">-$0.9M</span></div>
+        <div class="qbr-metric"><span class="label">Deals Closed</span><span class="value">11</span></div>
+        <div class="qbr-metric"><span class="label">Avg Deal Size</span><span class="value" style="color:#50b3f0;">$554K</span></div>
+      </div>
+
+      <div class="qbr-block">
+        <div class="qbr-block-title">Partner Capability</div>
+        <div class="qbr-metric"><span class="label">Certifications (Target)</span><span class="value" style="color:#a3d44a;">87 / 100</span></div>
+        <div class="qbr-metric"><span class="label">Sales Activated</span><span class="value" style="color:#a3d44a;">142</span></div>
+        <div class="qbr-metric"><span class="label">Onboarded this Q</span><span class="value">23</span></div>
+        <div class="qbr-metric"><span class="label">MCI Incentives Used</span><span class="value" style="color:#ffb900;">68%</span></div>
+        <div class="qbr-metric"><span class="label">Co-op Funds Claimed</span><span class="value" style="color:#e74c3c;">41%</span></div>
+      </div>
+
+      <div class="qbr-block">
+        <div class="qbr-block-title">Consumption & AI</div>
+        <div class="qbr-metric"><span class="label">M365 Copilot Seats</span><span class="value" style="color:#50e6ff;">1,240</span></div>
+        <div class="qbr-metric"><span class="label">Target Seats</span><span class="value" style="color:#ffb900;">2,000</span></div>
+        <div class="qbr-metric"><span class="label">Azure Consumed</span><span class="value" style="color:#a3d44a;">$3.8M</span></div>
+        <div class="qbr-metric"><span class="label">AI Workloads Live</span><span class="value">7</span></div>
+        <div class="qbr-metric"><span class="label">Readiness Score</span><span class="value" style="color:#ffb900;">Developing</span></div>
+      </div>
+    </div>
+
+    <!-- GAP ANALYSIS -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Gap Analysis by Solution Area
+          <span>RAG status + gap to target — update each MBR/QBR</span>
+        </div>
+        <button class="btn btn-ghost" onclick="exportQBR()">Export QBR Summary</button>
+      </div>
+      <div id="gap-analysis"></div>
+    </div>
+
+    <!-- BLOCKERS -->
+    <div class="two-col">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Open Blockers & Escalations
+            <span>Resolve before next QBR</span>
+          </div>
+        </div>
+        <div id="blockers-list"></div>
+        <div style="margin-top:16px;">
+          <div class="form-group">
+            <label class="form-label">Log New Blocker</label>
+            <input type="text" id="new-blocker" placeholder="Describe the blocker or escalation...">
+          </div>
+          <div style="display:flex; gap:8px; margin-top:8px;">
+            <select id="blocker-priority" style="max-width:140px;">
+              <option>Critical</option>
+              <option>Standard</option>
+              <option>Low</option>
+            </select>
+            <button class="btn btn-primary" onclick="addBlocker()">Log →</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Next QBR Agenda Builder
+            <span>Drag to reorder — share with Avanade exec team</span>
+          </div>
+        </div>
+        <div id="agenda-list"></div>
+        <div style="margin-top:16px;">
+          <div class="form-group">
+            <input type="text" id="new-agenda" placeholder="Add agenda item...">
+          </div>
+          <button class="btn btn-ghost" onclick="addAgendaItem()">+ Add Item</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="export-banner">
+      <div class="text">
+        <div class="title">QBR Package Ready</div>
+        <div class="desc">Generate an exec-ready QBR summary covering all solution areas, gap analysis, blockers, and next steps.</div>
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        <button class="btn btn-primary" onclick="exportQBR()">Generate QBR Summary</button>
+        <button class="btn btn-ghost" onclick="showToast('Link copied to clipboard')">Share Link</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ AI READINESS ============ -->
+  <div class="section" id="section-readiness">
+    <div class="page-header">
+      <div class="eyebrow">// Partner Enablement</div>
+      <h1>Copilot & AI <em>Readiness</em> Benchmark</h1>
+      <p>Assess partner readiness across four dimensions, identify capability gaps, and generate a prioritised action plan for AI transformation.</p>
+    </div>
+
+    <div class="readiness-grid">
+      <div class="readiness-card" id="rc-sales" onclick="selectReadinessDim('sales')">
+        <div class="readiness-icon">💼</div>
+        <div class="readiness-score" id="score-sales" style="color:#50e6ff;">—</div>
+        <div class="readiness-name">Sales Capability</div>
+        <div class="readiness-desc">Partner field team's ability to position, pitch, and close Copilot & AI solutions with enterprise customers.</div>
+      </div>
+      <div class="readiness-card" id="rc-tech" onclick="selectReadinessDim('tech')">
+        <div class="readiness-icon">⚙️</div>
+        <div class="readiness-score" id="score-tech" style="color:#50e6ff;">—</div>
+        <div class="readiness-name">Technical Certifications</div>
+        <div class="readiness-desc">Coverage of Microsoft AI and Copilot certifications across the partner's delivery and pre-sales team.</div>
+      </div>
+      <div class="readiness-card" id="rc-pipeline" onclick="selectReadinessDim('pipeline')">
+        <div class="readiness-icon">📈</div>
+        <div class="readiness-score" id="score-pipeline" style="color:#50e6ff;">—</div>
+        <div class="readiness-name">AI Pipeline</div>
+        <div class="readiness-desc">Volume and velocity of active AI/Copilot opportunities in co-sell with Microsoft, by stage and solution area.</div>
+      </div>
+      <div class="readiness-card" id="rc-consumption" onclick="selectReadinessDim('consumption')">
+        <div class="readiness-icon">🔥</div>
+        <div class="readiness-score" id="score-consumption" style="color:#50e6ff;">—</div>
+        <div class="readiness-name">Consumption & Adoption</div>
+        <div class="readiness-desc">Live Copilot seat activation and Azure AI workload consumption versus targets — the ultimate proof of partner impact.</div>
+      </div>
+    </div>
+
+    <!-- ASSESSMENT -->
+    <div class="two-col">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Score Each Dimension
+            <span>Rate 1–10 based on current partner state</span>
+          </div>
+        </div>
+
+        <div class="assessment-area">
+          <div class="assessment-label">
+            <span class="dim-name">💼 Sales Capability</span>
+            <span class="dim-score" id="disp-sales">5</span>
+          </div>
+          <input type="range" min="1" max="10" value="5" id="range-sales" oninput="updateReadiness()">
+          <div class="dim-hints"><span>No AI pitch capability</span><span>World-class AI GTM</span></div>
+        </div>
+
+        <div class="assessment-area">
+          <div class="assessment-label">
+            <span class="dim-name">⚙️ Technical Certifications</span>
+            <span class="dim-score" id="disp-tech">5</span>
+          </div>
+          <input type="range" min="1" max="10" value="5" id="range-tech" oninput="updateReadiness()">
+          <div class="dim-hints"><span>No AI certs</span><span>Full AI cert coverage</span></div>
+        </div>
+
+        <div class="assessment-area">
+          <div class="assessment-label">
+            <span class="dim-name">📈 AI Pipeline</span>
+            <span class="dim-score" id="disp-pipeline">5</span>
+          </div>
+          <input type="range" min="1" max="10" value="5" id="range-pipeline" oninput="updateReadiness()">
+          <div class="dim-hints"><span>No AI deals</span><span>Rich co-sell pipeline</span></div>
+        </div>
+
+        <div class="assessment-area">
+          <div class="assessment-label">
+            <span class="dim-name">🔥 Consumption & Adoption</span>
+            <span class="dim-score" id="disp-consumption">5</span>
+          </div>
+          <input type="range" min="1" max="10" value="5" id="range-consumption" oninput="updateReadiness()">
+          <div class="dim-hints"><span>No live workloads</span><span>Exceeding targets</span></div>
+        </div>
+      </div>
+
+      <!-- OUTPUT -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Readiness Output
+            <span>Auto-generated — updates live</span>
+          </div>
+        </div>
+
+        <div style="margin-bottom:20px;">
+          <div class="form-label" style="margin-bottom:10px;">Overall Readiness Tier</div>
+          <div id="tier-output" class="tier-badge tier-developing">⚡ Developing</div>
+        </div>
+
+        <div style="margin-bottom:20px;">
+          <div class="form-label" style="margin-bottom:12px;">Dimension Scores</div>
+          <div id="readiness-output-bars"></div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="form-label" style="margin-bottom:12px;">Prioritised Actions</div>
+        <div id="action-plan"></div>
+
+        <div style="margin-top:20px; display:flex; gap:10px; flex-wrap:wrap;">
+          <button class="btn btn-primary" onclick="exportReadiness()">Export Partner Report</button>
+          <button class="btn btn-ghost" onclick="showToast('Readiness link shared with partner')">Share with Partner</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ GTM PLANNER ============ -->
+  <div class="section" id="section-gtm">
+    <div class="page-header">
+      <div class="eyebrow">// Campaign Architecture</div>
+      <h1>GTM <em>Co-Sell</em> Planner</h1>
+      <p>Architect and execute go-to-market campaigns with SI and SDC partners — from readiness through field activation to QBR review.</p>
+    </div>
+
+    <!-- GTM Stages -->
+    <div class="card" style="margin-bottom:24px;">
+      <div class="card-header">
+        <div class="card-title">Campaign Builder
+          <span>Step through each GTM phase — track completion per stage</span>
+        </div>
+        <button class="btn btn-primary" onclick="newCampaign()">New Campaign</button>
+      </div>
+
+      <div style="display:grid; grid-template-columns: repeat(4,1fr); gap:12px; margin-bottom:28px;" id="gtm-stages">
+        <!-- Rendered by JS -->
+      </div>
+
+      <div id="gtm-stage-detail"></div>
+    </div>
+
+    <!-- Incentive Checklist -->
+    <div class="two-col">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Incentive & Programme Checklist
+            <span>Microsoft partner levers to activate per campaign</span>
+          </div>
+        </div>
+        <div id="incentive-checklist"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Campaign Milestone Calendar
+            <span>Key dates and owners</span>
+          </div>
+        </div>
+        <div id="milestone-list"></div>
+        <div style="margin-top:16px; display:flex; gap:8px;">
+          <input type="text" id="new-milestone" placeholder="Add milestone..." style="flex:1;">
+          <button class="btn btn-ghost" onclick="addMilestone()">+</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="export-banner">
+      <div class="text">
+        <div class="title">Campaign Plan Ready to Share</div>
+        <div class="desc">Export the full GTM plan — stages, incentives, milestones, and field activation checklist — for partner-facing alignment.</div>
+      </div>
+      <button class="btn btn-primary" onclick="exportGTM()">Export GTM Plan</button>
+    </div>
+  </div>
+
+</main>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ═══════════════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════════════
+function showSection(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('section-' + id).classList.add('active');
+  event.target.classList.add('active');
+}
+
+// ═══════════════════════════════════════════
+// TOAST
+// ═══════════════════════════════════════════
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+// ═══════════════════════════════════════════
+// PIPELINE DATA
+// ═══════════════════════════════════════════
+const AREA_META = {
+  infra: { label: 'App & Infra', cls: 'pill-infra', color: '#50b3f0' },
+  data:  { label: 'Data & AI',   cls: 'pill-data',  color: '#a3d44a' },
+  mw:    { label: 'Modern WP',   cls: 'pill-mw',    color: '#50e6ff' },
+  biz:   { label: 'Biz Apps',    cls: 'pill-biz',   color: '#ffb900' },
+  sec:   { label: 'Security',    cls: 'pill-sec',   color: '#e74c3c' },
+};
+
+let deals = [
+  { name: 'Contoso M365 Copilot Rollout', area: 'mw', partner: 'Avanade', value: 2400000, stage: 'Proposal', date: 'Mar 2026', rag: 'green' },
+  { name: 'Fabrikam Azure AI Platform', area: 'data', partner: 'Avanade', value: 1800000, stage: 'Negotiation', date: 'Feb 2026', rag: 'amber' },
+  { name: 'Northwind Security Modernisation', area: 'sec', partner: 'Accenture', value: 950000, stage: 'Qualified', date: 'Apr 2026', rag: 'green' },
+  { name: 'Alpine Dynamics Cloud Migration', area: 'infra', partner: 'Avanade', value: 3100000, stage: 'Proposal', date: 'Mar 2026', rag: 'red' },
+  { name: 'Woodgrove D365 Implementation', area: 'biz', partner: 'Accenture', value: 720000, stage: 'Prospect', date: 'May 2026', rag: 'amber' },
+  { name: 'Tailspin Sentinel Deployment', area: 'sec', partner: 'Avanade', value: 480000, stage: 'Closed Won', date: 'Jan 2026', rag: 'green' },
+  { name: 'Relecloud Fabric & Purview', area: 'data', partner: 'Avanade', value: 1350000, stage: 'Proposal', date: 'Apr 2026', rag: 'green' },
+];
+
+const CONSUMPTION = [
+  { area: 'App & Infra', pct: 82, color: '#50b3f0' },
+  { area: 'Data & AI',   pct: 67, color: '#a3d44a' },
+  { area: 'Modern WP',   pct: 54, color: '#50e6ff' },
+  { area: 'Biz Apps',    pct: 91, color: '#ffb900' },
+  { area: 'Security',    pct: 43, color: '#e74c3c' },
+];
+
+function ragBadge(r) {
+  const map = { green: 'rag-green', amber: 'rag-amber', red: 'rag-red' };
+  const lbl = { green: 'On Track', amber: 'At Risk', red: 'Blocked' };
+  return `<span class="rag ${map[r]}">${lbl[r]}</span>`;
+}
+
+function renderDeals(filter) {
+  const tbody = document.getElementById('deal-tbody');
+  const list = filter === 'all' ? deals : deals.filter(d => d.area === filter);
+  tbody.innerHTML = list.map(d => `
+    <tr>
+      <td class="deal-name">${d.name}</td>
+      <td><span class="solution-pill ${AREA_META[d.area].cls}" style="cursor:default;font-size:10px;padding:4px 10px;">${AREA_META[d.area].label}</span></td>
+      <td>${d.partner}</td>
+      <td class="deal-value">$${(d.value/1000000).toFixed(2)}M</td>
+      <td><span class="deal-stage">${d.stage}</span></td>
+      <td style="font-family:var(--font-mono);font-size:12px;color:var(--text-muted);">${d.date}</td>
+      <td>${ragBadge(d.rag)}</td>
+    </tr>
+  `).join('');
+}
+
+function renderConsumption() {
+  document.getElementById('consumption-bars').innerHTML = CONSUMPTION.map(c => `
+    <div class="progress-wrap">
+      <div class="progress-label">
+        <span class="name">${c.area}</span>
+        <span class="pct">${c.pct}% of target</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" style="width:0%; background:${c.color};" data-target="${c.pct}"></div>
+      </div>
+    </div>
+  `).join('');
+  setTimeout(() => {
+    document.querySelectorAll('.progress-fill').forEach(el => {
+      el.style.width = el.dataset.target + '%';
+    });
+  }, 100);
+}
+
+let currentFilter = 'all';
+function filterPipeline(el, area) {
+  document.querySelectorAll('.solution-pills .solution-pill').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  currentFilter = area;
+  renderDeals(area);
+}
+
+function addDeal() {
+  const name = document.getElementById('new-deal-name').value.trim();
+  if (!name) { showToast('Please enter a deal name'); return; }
+  deals.unshift({
+    name,
+    area: document.getElementById('new-deal-area').value,
+    partner: 'Avanade',
+    value: parseInt(document.getElementById('new-deal-value').value) || 500000,
+    stage: document.getElementById('new-deal-stage').value,
+    date: 'TBD',
+    rag: document.getElementById('new-deal-rag').value,
+  });
+  renderDeals(currentFilter);
+  document.getElementById('new-deal-name').value = '';
+  document.getElementById('new-deal-value').value = '';
+  showToast('Deal added to pipeline ✓');
+}
+
+// ═══════════════════════════════════════════
+// QBR DATA
+// ═══════════════════════════════════════════
+const GAP_DATA = [
+  { area: 'App & Infrastructure', target: '$8.0M', actual: '$6.6M', gap: '-$1.4M', rag: 'amber' },
+  { area: 'Data & AI',            target: '$6.0M', actual: '$4.0M', gap: '-$2.0M', rag: 'red' },
+  { area: 'Modern Workplace',     target: '$5.0M', actual: '$4.3M', gap: '-$0.7M', rag: 'amber' },
+  { area: 'Business Applications',target: '$3.0M', actual: '$2.9M', gap: '-$0.1M', rag: 'green' },
+  { area: 'Security',             target: '$2.7M', actual: '$1.1M', gap: '-$1.6M', rag: 'red' },
+];
+
+function renderGapAnalysis() {
+  document.getElementById('gap-analysis').innerHTML = `
+    <table class="deal-table">
+      <thead>
+        <tr>
+          <th>Solution Area</th>
+          <th>Target (Q)</th>
+          <th>Actual</th>
+          <th>Gap</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${GAP_DATA.map(g => `
+          <tr>
+            <td style="font-weight:600;">${g.area}</td>
+            <td style="font-family:var(--font-mono);font-size:12px;">${g.target}</td>
+            <td style="font-family:var(--font-mono);font-size:12px;color:#a3d44a;">${g.actual}</td>
+            <td style="font-family:var(--font-mono);font-size:12px;color:#e74c3c;">${g.gap}</td>
+            <td>${ragBadge(g.rag)}</td>
+          </tr>
+        `).join('')}
+      </tbody>
+    </table>
+  `;
+}
+
+let blockers = [
+  { text: 'Azure subscription provisioning delay — Fabrikam deal at risk', priority: 'Critical', done: false },
+  { text: 'MCI incentive approval pending > 3 weeks — Avanade team escalating', priority: 'Critical', done: false },
+  { text: 'Partner enablement materials not localised for LATAM field team', priority: 'Standard', done: false },
+];
+
+function renderBlockers() {
+  const priColors = { Critical: '#e74c3c', Standard: '#ffb900', Low: '#50b3f0' };
+  document.getElementById('blockers-list').innerHTML = blockers.map((b, i) => `
+    <div class="action-item" style="${b.done ? 'opacity:0.4;' : ''}">
+      <div class="action-icon" style="background:rgba(${b.priority==='Critical'?'231,76,60':'255,185,0'},0.15);font-size:16px;">
+        ${b.done ? '✓' : b.priority === 'Critical' ? '🚨' : '⚠️'}
+      </div>
+      <div class="action-body">
+        <div class="action-title" style="${b.done?'text-decoration:line-through;':''}">${b.text}</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end;">
+        <span style="font-family:var(--font-mono);font-size:10px;color:${priColors[b.priority]};">${b.priority}</span>
+        <button onclick="resolveBlocker(${i})" style="background:none;border:1px solid var(--border-bright);color:var(--text-muted);padding:2px 8px;border-radius:4px;font-size:10px;cursor:pointer;">Resolve</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function addBlocker() {
+  const t = document.getElementById('new-blocker').value.trim();
+  if (!t) return;
+  blockers.unshift({ text: t, priority: document.getElementById('blocker-priority').value, done: false });
+  renderBlockers();
+  document.getElementById('new-blocker').value = '';
+  showToast('Blocker logged ✓');
+}
+
+function resolveBlocker(i) {
+  blockers[i].done = true;
+  renderBlockers();
+  showToast('Blocker marked resolved ✓');
+}
+
+let agenda = [
+  'Performance vs Target — all solution areas',
+  'Top deal review & deal coaching',
+  'AI / Copilot readiness update',
+  'Blockers & escalation resolution',
+  'Incentive and co-op fund utilisation',
+  'Next quarter priorities & GTM alignment',
+];
+
+function renderAgenda() {
+  document.getElementById('agenda-list').innerHTML = agenda.map((a, i) => `
+    <div class="action-item" style="cursor:grab;">
+      <div style="font-family:var(--font-mono);font-size:11px;color:var(--text-muted);width:20px;flex-shrink:0;">${String(i+1).padStart(2,'0')}</div>
+      <div class="action-body"><div style="font-size:13px;">${a}</div></div>
+    </div>
+  `).join('');
+}
+
+function addAgendaItem() {
+  const v = document.getElementById('new-agenda').value.trim();
+  if (!v) return;
+  agenda.push(v);
+  renderAgenda();
+  document.getElementById('new-agenda').value = '';
+}
+
+function exportQBR() {
+  showToast('QBR summary generated — opening preview...');
+  setTimeout(() => {
+    const w = window.open('', '_blank');
+    w.document.write(`
+      <html><head><title>QBR Summary</title>
+      <style>body{font-family:Arial,sans-serif;max-width:800px;margin:40px auto;color:#1a1a1a;line-height:1.6;}
+      h1{color:#0078d4;border-bottom:3px solid #0078d4;padding-bottom:10px;}
+      h2{color:#0078d4;margin-top:32px;}
+      table{width:100%;border-collapse:collapse;margin:16px 0;}
+      th{background:#0078d4;color:white;padding:10px 12px;text-align:left;}
+      td{padding:10px 12px;border-bottom:1px solid #eee;}
+      .green{color:#7fba00;font-weight:bold;} .amber{color:#ffb900;font-weight:bold;} .red{color:#e74c3c;font-weight:bold;}
+      </style></head><body>
+      <h1>Quarterly Business Review — SME&C Partner Summary</h1>
+      <p><strong>Partner:</strong> Avanade / Accenture &nbsp;|&nbsp; <strong>Date:</strong> ${new Date().toLocaleDateString('en-US',{month:'long',year:'numeric'})} &nbsp;|&nbsp; <strong>PDM:</strong> [Your Name]</p>
+      <h2>Revenue & Pipeline</h2>
+      <table><tr><th>Metric</th><th>Value</th></tr>
+      <tr><td>Total Pipeline</td><td>$24.7M</td></tr>
+      <tr><td>Q Revenue</td><td>$6.1M</td></tr>
+      <tr><td>Pipeline Coverage</td><td>3.2x</td></tr>
+      <tr><td>Deals Closed</td><td>11</td></tr>
+      </table>
+      <h2>Gap Analysis by Solution Area</h2>
+      <table><tr><th>Area</th><th>Target</th><th>Actual</th><th>Gap</th><th>Status</th></tr>
+      ${GAP_DATA.map(g=>`<tr><td>${g.area}</td><td>${g.target}</td><td>${g.actual}</td><td class="red">${g.gap}</td><td class="${g.rag}">${g.rag.toUpperCase()}</td></tr>`).join('')}
+      </table>
+      <h2>Open Blockers</h2>
+      <ul>${blockers.filter(b=>!b.done).map(b=>`<li><strong>${b.priority}:</strong> ${b.text}</li>`).join('')}</ul>
+      <h2>Next QBR Agenda</h2>
+      <ol>${agenda.map(a=>`<li>${a}</li>`).join('')}</ol>
+      <p style="margin-top:40px;color:#888;font-size:12px;">Generated by PDM Partner Intelligence Hub</p>
+      </body></html>
+    `);
+    w.document.close();
+  }, 500);
+}
+
+// ═══════════════════════════════════════════
+// AI READINESS
+// ═══════════════════════════════════════════
+const READINESS_ACTIONS = {
+  sales: [
+    { score: [1,4], icon: '🎓', title: 'Enrol in Microsoft AI Cloud Partner Program sales training', desc: 'Mandatory baseline for all field sellers — Copilot for M365 and Azure AI sales plays.', tag: 'Immediate' },
+    { score: [5,7], icon: '🎯', title: 'Run Copilot sales play workshops with top 20 sellers', desc: 'Focus on value articulation, ROI calculators, and competitive positioning against Google Workspace AI.', tag: 'This Quarter' },
+    { score: [8,10], icon: '🚀', title: 'Activate co-sell motion — nominate AI Champions per territory', desc: 'Establish an internal AI champion network to cascade best practice and accelerate deal velocity.', tag: 'Optimise' },
+  ],
+  tech: [
+    { score: [1,4], icon: '📋', title: 'Map current cert coverage vs Microsoft AI certification matrix', desc: 'Identify gap: Azure AI Engineer, Copilot Studio, Power Platform AI Builder certifications critical.', tag: 'Immediate' },
+    { score: [5,7], icon: '🏆', title: 'Launch structured cert sprint with MCI funding', desc: 'Use Microsoft Competency Incentives to subsidise certification paths for 50+ engineers this quarter.', tag: 'This Quarter' },
+    { score: [8,10], icon: '⭐', title: 'Pursue AI Cloud Partner Program designation', desc: 'Advanced specialisations in AI & ML or Intelligent Automation signal elite partner status to enterprise customers.', tag: 'Optimise' },
+  ],
+  pipeline: [
+    { score: [1,4], icon: '🌱', title: 'Run joint AI pipeline generation workshop with PDM', desc: 'Identify top 10 existing customer accounts with highest Copilot/Azure AI upsell potential.', tag: 'Immediate' },
+    { score: [5,7], icon: '🔗', title: 'Register all AI deals in Partner Center co-sell', desc: 'Ensure 100% of AI opportunities are co-sell registered to unlock deal support and prioritisation from Microsoft field.', tag: 'This Quarter' },
+    { score: [8,10], icon: '📊', title: 'Implement weekly AI pipeline cadence with Microsoft PDM', desc: 'Structured pipeline reviews focused on velocity, blockers, and consumption conversion from commit to active.', tag: 'Optimise' },
+  ],
+  consumption: [
+    { score: [1,4], icon: '🔌', title: 'Identify 3 lighthouse Copilot customers for activation', desc: 'Focus on quick wins: existing M365 E3/E5 customers where Copilot seats are licensed but inactive.', tag: 'Immediate' },
+    { score: [5,7], icon: '📱', title: 'Launch Copilot adoption programme with customer success play', desc: 'Deploy structured 30-60-90 day adoption journeys with usage telemetry and executive business reviews.', tag: 'This Quarter' },
+    { score: [8,10], icon: '🎯', title: 'Build Azure AI consumption dashboard for exec visibility', desc: 'Create real-time consumption visibility for partner leadership — drives accountability and surfaces upsell signals.', tag: 'Optimise' },
+  ],
+};
+
+let readinessScores = { sales: 5, tech: 5, pipeline: 5, consumption: 5 };
+
+function updateReadiness() {
+  const dims = ['sales', 'tech', 'pipeline', 'consumption'];
+  dims.forEach(d => {
+    const v = parseInt(document.getElementById('range-' + d).value);
+    readinessScores[d] = v;
+    document.getElementById('disp-' + d).textContent = v;
+    document.getElementById('score-' + d).textContent = v + '/10';
+
+    const c = v <= 4 ? '#e74c3c' : v <= 7 ? '#ffb900' : '#7fba00';
+    document.getElementById('score-' + d).style.color = c;
+  });
+
+  const avg = dims.reduce((s, d) => s + readinessScores[d], 0) / 4;
+  const tierEl = document.getElementById('tier-output');
+  if (avg <= 4) {
+    tierEl.textContent = '🔴 Foundational'; tierEl.className = 'tier-badge tier-foundational';
+  } else if (avg <= 7) {
+    tierEl.textContent = '⚡ Developing'; tierEl.className = 'tier-badge tier-developing';
+  } else {
+    tierEl.textContent = '🚀 Advanced'; tierEl.className = 'tier-badge tier-advanced';
+  }
+
+  // Output bars
+  document.getElementById('readiness-output-bars').innerHTML = dims.map(d => {
+    const v = readinessScores[d];
+    const c = v <= 4 ? '#e74c3c' : v <= 7 ? '#ffb900' : '#7fba00';
+    const labels = { sales:'Sales Capability', tech:'Technical Certs', pipeline:'AI Pipeline', consumption:'Consumption' };
+    return `
+      <div class="progress-wrap" style="margin-bottom:14px;">
+        <div class="progress-label">
+          <span class="name" style="font-size:12px;">${labels[d]}</span>
+          <span class="pct">${v}/10</span>
+        </div>
+        <div class="progress-track">
+          <div class="progress-fill" style="width:${v*10}%;background:${c};"></div>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  // Action plan — weakest dimension first
+  const sorted = [...dims].sort((a,b) => readinessScores[a] - readinessScores[b]);
+  document.getElementById('action-plan').innerHTML = sorted.map(d => {
+    const v = readinessScores[d];
+    const actions = READINESS_ACTIONS[d];
+    const action = actions.find(a => v >= a.score[0] && v <= a.score[1]);
+    if (!action) return '';
+    return `
+      <div class="action-item">
+        <div class="action-icon">${action.icon}</div>
+        <div class="action-body">
+          <div class="action-title">${action.title}</div>
+          <div class="action-desc">${action.desc}</div>
+        </div>
+        <span class="action-tag">${action.tag}</span>
+      </div>
+    `;
+  }).join('');
+}
+
+function selectReadinessDim(dim) {
+  document.querySelectorAll('.readiness-card').forEach(c => c.classList.remove('selected'));
+  document.getElementById('rc-' + dim).classList.add('selected');
+}
+
+function exportReadiness() {
+  showToast('Partner readiness report generated ✓');
+}
+
+// ═══════════════════════════════════════════
+// GTM PLANNER
+// ═══════════════════════════════════════════
+const GTM_STAGES = [
+  { id: 'readiness', label: '01 Readiness', icon: '🎓', desc: 'Align partner on campaign objectives, solution areas, and required enablement before launch.' },
+  { id: 'activation', label: '02 Activation', icon: '⚡', desc: 'Launch co-sell motion — register opportunities, brief field teams, activate incentives.' },
+  { id: 'landing', label: '03 Field Landing', icon: '🎯', desc: 'Drive internal Avanade/Accenture awareness — proposals in field, country reviews, deal coaching.' },
+  { id: 'review', label: '04 Review', icon: '📊', desc: 'Track outcomes in QBR — close gaps, update account plan, plan next campaign wave.' },
+];
+
+let activeStage = 'readiness';
+
+const STAGE_CHECKLISTS = {
+  readiness: ['Define target solution areas and ICP', 'Confirm PDM and partner exec sponsors', 'Map incentives: MCI, co-op, co-sell benefits', 'Complete partner sales enablement session', 'Document partner field team contacts by region'],
+  activation: ['Register co-sell opportunities in Partner Center', 'Brief Avanade/Accenture country leads', 'Activate MCI incentive claims', 'Create campaign one-pager for field use', 'Set pipeline target and KPIs'],
+  landing: ['Deliver internal partner webinar / town hall', 'Publish campaign assets to partner portal', 'Complete country-level deal reviews', 'Coach top 5 deals through proposal stage', 'Run competitive battlecard session'],
+  review: ['Hold QBR with partner exec team', 'Measure pipeline conversion vs target', 'Document lessons learned', 'Update account plan for next quarter', 'Celebrate wins and recognise partner champions'],
+};
+
+let stageChecked = { readiness: [], activation: [], landing: [], review: [] };
+
+function renderGTMStages() {
+  const colors = ['#0078d4','#7fba00','#50e6ff','#ffb900'];
+  document.getElementById('gtm-stages').innerHTML = GTM_STAGES.map((s, i) => {
+    const done = stageChecked[s.id].length;
+    const total = STAGE_CHECKLISTS[s.id].length;
+    const pct = Math.round(done/total*100);
+    return `
+      <div onclick="selectStage('${s.id}')" style="
+        background:var(--surface2); border:1px solid ${s.id===activeStage ? colors[i] : 'var(--border)'};
+        border-radius:var(--radius-sm); padding:20px; cursor:pointer; transition:all 0.2s;
+        ${s.id===activeStage ? 'background:rgba(255,255,255,0.04);' : ''}
+      ">
+        <div style="font-size:24px;margin-bottom:8px;">${s.icon}</div>
+        <div style="font-size:12px;font-weight:700;letter-spacing:0.06em;margin-bottom:6px;">${s.label}</div>
+        <div style="font-size:11px;color:var(--text-muted);margin-bottom:12px;line-height:1.4;">${s.desc}</div>
+        <div style="height:3px;background:var(--surface);border-radius:2px;overflow:hidden;">
+          <div style="height:100%;width:${pct}%;background:${colors[i]};transition:width 0.5s;"></div>
+        </div>
+        <div style="margin-top:6px;font-family:var(--font-mono);font-size:10px;color:var(--text-muted);">${done}/${total} complete</div>
+      </div>
+    `;
+  }).join('');
+
+  // Stage detail
+  const stage = GTM_STAGES.find(s => s.id === activeStage);
+  const checks = STAGE_CHECKLISTS[activeStage];
+  document.getElementById('gtm-stage-detail').innerHTML = `
+    <div style="margin-top:8px; padding-top:24px; border-top:1px solid var(--border);">
+      <div class="card-title" style="margin-bottom:16px;">${stage.icon} ${stage.label} — Action Checklist</div>
+      ${checks.map((c, i) => {
+        const checked = stageChecked[activeStage].includes(i);
+        return `
+          <div class="action-item" onclick="toggleCheck('${activeStage}',${i})" style="cursor:pointer;${checked?'opacity:0.5;':''};margin-bottom:8px;">
+            <div style="width:22px;height:22px;border:2px solid ${checked?'#7fba00':'var(--border-bright)'};border-radius:5px;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:${checked?'rgba(127,186,0,0.15)':'transparent'};transition:all 0.2s;">
+              ${checked ? '<span style="color:#7fba00;font-size:14px;">✓</span>' : ''}
+            </div>
+            <div class="action-body"><div style="font-size:13px;${checked?'text-decoration:line-through;':''}">${c}</div></div>
+          </div>
+        `;
+      }).join('')}
+    </div>
+  `;
+}
+
+function selectStage(id) {
+  activeStage = id;
+  renderGTMStages();
+}
+
+function toggleCheck(stage, i) {
+  const arr = stageChecked[stage];
+  const idx = arr.indexOf(i);
+  if (idx > -1) arr.splice(idx, 1); else arr.push(i);
+  renderGTMStages();
+}
+
+function newCampaign() {
+  Object.keys(stageChecked).forEach(k => stageChecked[k] = []);
+  activeStage = 'readiness';
+  renderGTMStages();
+  showToast('New campaign started ✓');
+}
+
+const INCENTIVES = [
+  { name: 'MCI — Marketplace Incentives', desc: 'Claim per qualified opportunity registered in Partner Center', checked: false },
+  { name: 'Co-op Funds', desc: 'Co-marketing funds tied to earned revenue — up to 3% of partner-driven revenue', checked: false },
+  { name: 'Azure Consumed Revenue (ACR)', desc: 'Track and report Azure consumption — triggers co-sell prioritisation', checked: false },
+  { name: 'Solution Designations', desc: 'Verify partner has relevant AI / Modern Workplace solution designation', checked: false },
+  { name: 'FastTrack for Partners', desc: 'Engage FastTrack resources for Copilot deployment support', checked: false },
+  { name: 'Partner Centre Co-sell Status', desc: 'Ensure Co-sell Ready and IP Co-sell Eligible status is current', checked: false },
+];
+
+function renderIncentives() {
+  document.getElementById('incentive-checklist').innerHTML = INCENTIVES.map((item, i) => `
+    <div class="action-item" onclick="toggleIncentive(${i})" style="cursor:pointer;${item.checked?'opacity:0.5;':''}margin-bottom:8px;">
+      <div style="width:22px;height:22px;border:2px solid ${item.checked?'#7fba00':'var(--border-bright)'};border-radius:5px;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:${item.checked?'rgba(127,186,0,0.15)':'transparent'};transition:all 0.2s;flex-shrink:0;">
+        ${item.checked ? '<span style="color:#7fba00;font-size:14px;">✓</span>' : ''}
+      </div>
+      <div class="action-body">
+        <div class="action-title">${item.name}</div>
+        <div class="action-desc">${item.desc}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function toggleIncentive(i) {
+  INCENTIVES[i].checked = !INCENTIVES[i].checked;
+  renderIncentives();
+}
+
+let milestones = [
+  'Kick-off call with partner exec team — Week 1',
+  'Field activation webinar — Week 3',
+  'Pipeline checkpoint with PDM — Week 6',
+  'Country deal reviews — Week 8',
+  'QBR presentation — End of Quarter',
+];
+
+function renderMilestones() {
+  document.getElementById('milestone-list').innerHTML = milestones.map((m, i) => `
+    <div class="action-item" style="margin-bottom:8px;">
+      <div style="font-family:var(--font-mono);font-size:11px;color:var(--text-muted);width:24px;flex-shrink:0;">${i+1}</div>
+      <div class="action-body"><div style="font-size:13px;">${m}</div></div>
+    </div>
+  `).join('');
+}
+
+function addMilestone() {
+  const v = document.getElementById('new-milestone').value.trim();
+  if (!v) return;
+  milestones.push(v);
+  renderMilestones();
+  document.getElementById('new-milestone').value = '';
+}
+
+function exportGTM() {
+  showToast('GTM plan exported ✓');
+}
+
+// ═══════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════
+renderDeals('all');
+renderConsumption();
+renderGapAnalysis();
+renderBlockers();
+renderAgenda();
+updateReadiness();
+renderGTMStages();
+renderIncentives();
+renderMilestones();
+</script>
+</body>
+</html>
