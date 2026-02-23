@@ -1,0 +1,1611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0a0a14">
+<meta name="description" content="PDM Partner Intelligence Hub — Co-sell pipeline, QBR governance, and AI readiness in one place.">
+<title>PDM Partner Intelligence Hub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;1,300&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#07070f; --surface:#0f0f1e; --surface2:#161628; --surface3:#1e1e36;
+  --border:rgba(255,255,255,0.07); --border-bright:rgba(255,255,255,0.14);
+  --accent:#0078d4; --accent2:#50e6ff; --accent3:#7fba00;
+  --accent-warn:#ffb900; --accent-danger:#e74c3c;
+  --text:#f0f0f8; --text-muted:rgba(240,240,248,0.45); --text-dim:rgba(240,240,248,0.25);
+  --green:#7fba00; --amber:#ffb900; --red:#e74c3c;
+  --font-display:'Syne',sans-serif; --font-mono:'DM Mono',monospace; --font-serif:'Instrument Serif',serif;
+  --radius:12px; --radius-sm:8px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--font-display);min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 80% 50% at 10% 0%,rgba(0,120,212,0.12) 0%,transparent 60%),radial-gradient(ellipse 60% 40% at 90% 100%,rgba(80,230,255,0.07) 0%,transparent 60%),radial-gradient(ellipse 40% 60% at 50% 50%,rgba(127,186,0,0.04) 0%,transparent 70%);pointer-events:none;z-index:0}
+body::after{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(255,255,255,0.015) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.015) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:0 32px;height:64px;background:rgba(7,7,15,0.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+.nav-left{display:flex;align-items:center;gap:16px}
+.nav-logo{display:flex;align-items:center;gap:10px;font-size:13px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--text)}
+.logo-mark{width:28px;height:28px;display:grid;grid-template-columns:1fr 1fr;gap:3px}
+.logo-mark span{display:block;border-radius:2px}
+.logo-mark span:nth-child(1){background:#f25022}
+.logo-mark span:nth-child(2){background:#7fba00}
+.logo-mark span:nth-child(3){background:#00a4ef}
+.logo-mark span:nth-child(4){background:#ffb900}
+.nav-badge{font-size:10px;font-family:var(--font-mono);color:var(--accent2);opacity:0.7}
+.nav-tabs{display:flex;gap:4px}
+.nav-tab{padding:6px 16px;border-radius:6px;font-size:12px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;cursor:pointer;border:none;background:transparent;color:var(--text-muted);transition:all 0.2s}
+.nav-tab:hover{color:var(--text);background:var(--surface2)}
+.nav-tab.active{color:var(--accent2);background:rgba(80,230,255,0.08)}
+.nav-right{display:flex;align-items:center;gap:8px}
+
+/* DATA SOURCE CONNECTOR */
+.connector-btn{display:flex;align-items:center;gap:7px;padding:6px 14px;border-radius:6px;border:1px solid var(--border-bright);background:var(--surface2);color:var(--text-muted);font-family:var(--font-display);font-size:11px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;cursor:pointer;transition:all 0.2s}
+.connector-btn:hover{color:var(--text);border-color:var(--accent2)}
+.connector-btn.connected{color:var(--green);border-color:rgba(127,186,0,0.4);background:rgba(127,186,0,0.08)}
+.connector-dot{width:7px;height:7px;border-radius:50%;background:currentColor;flex-shrink:0}
+
+main{position:relative;z-index:1;max-width:1400px;margin:0 auto;padding:40px 32px}
+.section{display:none;animation:fadeUp 0.4s ease both}
+.section.active{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+
+/* PAGE HEADER */
+.page-header{margin-bottom:40px;display:flex;align-items:flex-start;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.page-header-text .eyebrow{font-family:var(--font-mono);font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:var(--accent2);margin-bottom:12px}
+.page-header-text h1{font-size:clamp(28px,4vw,48px);font-weight:800;line-height:1.1;letter-spacing:-0.02em}
+.page-header-text h1 em{font-family:var(--font-serif);font-style:italic;color:var(--accent2);font-weight:400}
+.page-header-text p{margin-top:12px;color:var(--text-muted);font-size:15px;max-width:600px;line-height:1.6;font-weight:400}
+.page-header-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:flex-start;padding-top:4px}
+
+/* STATS */
+.stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin-bottom:24px}
+.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px 18px;position:relative;overflow:hidden;transition:border-color 0.2s;cursor:pointer}
+.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--accent-color,var(--accent));opacity:0.8}
+.stat-card:hover{border-color:var(--border-bright)}
+.stat-card-actions{position:absolute;top:10px;right:10px;display:none;gap:4px}
+.stat-card:hover .stat-card-actions{display:flex}
+.stat-icon-btn{background:var(--surface2);border:1px solid var(--border-bright);border-radius:4px;color:var(--text-muted);font-size:11px;padding:2px 6px;cursor:pointer;line-height:1.4;transition:all 0.15s}
+.stat-icon-btn:hover{color:var(--text);border-color:var(--accent2)}
+.stat-label{font-family:var(--font-mono);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-muted);margin-bottom:10px}
+.stat-value{font-size:30px;font-weight:800;letter-spacing:-0.03em;line-height:1}
+.stat-sub{margin-top:6px;font-size:11px;color:var(--text-muted);font-family:var(--font-mono)}
+.stat-targets{margin-top:8px;display:flex;gap:8px;font-family:var(--font-mono);font-size:10px}
+.stat-target-item{padding:2px 6px;border-radius:3px;background:var(--surface2)}
+.stat-target-item.init{color:var(--text-dim)}
+.stat-target-item.tgt{color:var(--accent2)}
+
+/* CARDS */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:28px;margin-bottom:20px}
+.card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;gap:12px;flex-wrap:wrap}
+.card-title{font-size:14px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase}
+.card-title span{display:block;font-weight:400;font-size:12px;color:var(--text-muted);text-transform:none;letter-spacing:0;margin-top:3px}
+.card-actions{display:flex;gap:8px;flex-wrap:wrap}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media(max-width:900px){.two-col{grid-template-columns:1fr}}
+
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;gap:8px;padding:9px 18px;border-radius:var(--radius-sm);font-family:var(--font-display);font-size:12px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;cursor:pointer;border:none;transition:all 0.2s}
+.btn-primary{background:var(--accent);color:white}
+.btn-primary:hover{background:#106ebe;transform:translateY(-1px)}
+.btn-ghost{background:transparent;color:var(--text-muted);border:1px solid var(--border-bright)}
+.btn-ghost:hover{color:var(--text);border-color:var(--text-muted)}
+.btn-danger{background:rgba(231,76,60,0.12);color:#e74c3c;border:1px solid rgba(231,76,60,0.3)}
+.btn-danger:hover{background:rgba(231,76,60,0.2)}
+.btn-sm{padding:5px 12px;font-size:11px}
+.btn-icon{padding:6px 8px;min-width:32px;justify-content:center}
+
+/* RAG */
+.rag{display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:100px;font-family:var(--font-mono);font-size:11px;letter-spacing:0.06em}
+.rag::before{content:'';width:7px;height:7px;border-radius:50%;background:currentColor;flex-shrink:0}
+.rag-green{color:var(--green);background:rgba(127,186,0,0.1)}
+.rag-amber{color:var(--amber);background:rgba(255,185,0,0.1)}
+.rag-red{color:var(--red);background:rgba(231,76,60,0.1)}
+
+/* SOLUTION PILLS */
+.solution-pills{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px}
+.solution-pill{padding:6px 14px;border-radius:6px;font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;cursor:pointer;border:1px solid transparent;transition:all 0.2s}
+.pill-infra{background:rgba(0,120,212,0.12);color:#50b3f0;border-color:rgba(0,120,212,0.25)}
+.pill-data{background:rgba(127,186,0,0.12);color:#a3d44a;border-color:rgba(127,186,0,0.25)}
+.pill-mw{background:rgba(80,230,255,0.10);color:#50e6ff;border-color:rgba(80,230,255,0.2)}
+.pill-biz{background:rgba(255,185,0,0.10);color:#ffb900;border-color:rgba(255,185,0,0.2)}
+.pill-sec{background:rgba(231,76,60,0.10);color:#e74c3c;border-color:rgba(231,76,60,0.2)}
+.solution-pill.active,.solution-pill:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(0,0,0,0.3)}
+
+/* DEAL TABLE */
+.deal-table{width:100%;border-collapse:collapse}
+.deal-table th{font-family:var(--font-mono);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-muted);text-align:left;padding:8px 12px;border-bottom:1px solid var(--border)}
+.deal-table td{padding:12px;font-size:13px;border-bottom:1px solid rgba(255,255,255,0.04);vertical-align:middle}
+.deal-table tr:last-child td{border-bottom:none}
+.deal-table tr:hover td{background:rgba(255,255,255,0.02)}
+.deal-name{font-weight:600}
+.deal-value{font-family:var(--font-mono);font-size:12px;color:var(--accent2)}
+.deal-stage{font-family:var(--font-mono);font-size:10px;padding:3px 8px;border-radius:4px;background:var(--surface2);color:var(--text-muted);letter-spacing:0.06em}
+.tbl-actions{display:flex;gap:4px;opacity:0;transition:opacity 0.15s}
+tr:hover .tbl-actions{opacity:1}
+
+/* PROGRESS */
+.progress-wrap{margin-bottom:18px}
+.progress-label{display:flex;justify-content:space-between;margin-bottom:8px;font-size:12px;align-items:center}
+.progress-label .name{color:var(--text);font-weight:600}
+.progress-label .pct{font-family:var(--font-mono);color:var(--text-muted)}
+.progress-label .prog-actions{display:flex;gap:4px;margin-left:8px}
+.progress-track{height:6px;background:var(--surface2);border-radius:3px;overflow:hidden}
+.progress-fill{height:100%;border-radius:3px;transition:width 1s cubic-bezier(0.4,0,0.2,1)}
+
+/* READINESS */
+.readiness-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin-bottom:24px}
+.readiness-card{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:24px;cursor:pointer;transition:all 0.2s;position:relative;overflow:hidden}
+.readiness-card:hover{border-color:var(--border-bright);transform:translateY(-2px)}
+.readiness-card.selected{border-color:var(--accent);background:rgba(0,120,212,0.08)}
+.readiness-icon{font-size:28px;margin-bottom:12px}
+.readiness-name{font-size:14px;font-weight:700;margin-bottom:6px}
+.readiness-desc{font-size:12px;color:var(--text-muted);line-height:1.5;font-weight:400}
+.readiness-score{position:absolute;top:16px;right:16px;font-family:var(--font-mono);font-size:22px;font-weight:300}
+.assessment-area{margin-bottom:22px}
+.assessment-label{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.assessment-label .dim-name{font-size:14px;font-weight:600}
+.assessment-label .dim-score{font-family:var(--font-mono);font-size:24px;color:var(--accent2)}
+input[type=range]{-webkit-appearance:none;width:100%;height:4px;border-radius:2px;background:var(--surface2);outline:none;margin-bottom:8px}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:var(--accent2);cursor:pointer;box-shadow:0 0 0 3px rgba(80,230,255,0.2);transition:box-shadow 0.2s}
+input[type=range]::-webkit-slider-thumb:hover{box-shadow:0 0 0 6px rgba(80,230,255,0.2)}
+.dim-hints{display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:10px;color:var(--text-dim);letter-spacing:0.06em}
+.tier-badge{display:inline-flex;align-items:center;gap:10px;padding:12px 20px;border-radius:var(--radius-sm);font-weight:700;font-size:14px;letter-spacing:0.04em}
+.tier-foundational{background:rgba(231,76,60,0.12);color:#e74c3c;border:1px solid rgba(231,76,60,0.25)}
+.tier-developing{background:rgba(255,185,0,0.12);color:#ffb900;border:1px solid rgba(255,185,0,0.25)}
+.tier-advanced{background:rgba(127,186,0,0.12);color:#7fba00;border:1px solid rgba(127,186,0,0.25)}
+
+/* ACTION ITEMS */
+.action-item{display:flex;gap:14px;padding:14px;background:var(--surface2);border-radius:var(--radius-sm);border:1px solid var(--border);margin-bottom:10px;align-items:flex-start;transition:border-color 0.2s}
+.action-item:hover{border-color:var(--border-bright)}
+.action-icon{width:36px;height:36px;border-radius:8px;background:rgba(0,120,212,0.15);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.action-body{flex:1;min-width:0}
+.action-title{font-size:13px;font-weight:600;margin-bottom:4px}
+.action-desc{font-size:12px;color:var(--text-muted);line-height:1.4;font-weight:400}
+.action-tag{font-family:var(--font-mono);font-size:10px;padding:2px 8px;border-radius:4px;background:var(--surface);color:var(--accent2);flex-shrink:0;margin-top:2px}
+
+/* QBR */
+.qbr-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:24px}
+@media(max-width:768px){.qbr-grid{grid-template-columns:1fr}}
+.qbr-block{background:var(--surface2);border-radius:var(--radius-sm);border:1px solid var(--border);padding:20px}
+.qbr-block-title{font-family:var(--font-mono);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-muted);margin-bottom:14px}
+.qbr-metric{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);font-size:13px;gap:8px}
+.qbr-metric:last-child{border-bottom:none}
+.qbr-metric .label{color:var(--text-muted);font-size:12px}
+.qbr-metric .value{font-family:var(--font-mono);font-size:13px}
+.qbr-metric .metric-actions{display:none;gap:4px}
+.qbr-metric:hover .metric-actions{display:flex}
+
+/* FORMS */
+input[type=text],input[type=number],select,textarea{background:var(--surface2);border:1px solid var(--border-bright);border-radius:var(--radius-sm);color:var(--text);font-family:var(--font-display);font-size:13px;padding:9px 13px;outline:none;transition:border-color 0.2s;width:100%}
+input[type=text]:focus,input[type=number]:focus,select:focus,textarea:focus{border-color:var(--accent)}
+select option{background:var(--surface2)}
+.form-group{margin-bottom:14px}
+.form-label{display:block;font-family:var(--font-mono);font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-muted);margin-bottom:6px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.form-row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+
+/* EXPORT BANNER */
+.export-banner{background:linear-gradient(135deg,rgba(0,120,212,0.15),rgba(80,230,255,0.08));border:1px solid rgba(0,120,212,0.3);border-radius:var(--radius);padding:24px 28px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.export-banner .text .title{font-size:16px;font-weight:700;margin-bottom:4px}
+.export-banner .text .desc{font-size:13px;color:var(--text-muted);font-weight:400}
+
+/* DIVIDER */
+.divider{height:1px;background:var(--border);margin:24px 0}
+
+/* MODAL OVERLAY */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.75);backdrop-filter:blur(6px);z-index:500;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity 0.2s}
+.modal-overlay.open{opacity:1;pointer-events:all}
+.modal{background:var(--surface);border:1px solid var(--border-bright);border-radius:var(--radius);padding:32px;width:100%;max-width:520px;max-height:90vh;overflow-y:auto;transform:translateY(20px);transition:transform 0.25s;position:relative}
+.modal-overlay.open .modal{transform:translateY(0)}
+.modal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px}
+.modal-title{font-size:16px;font-weight:800;letter-spacing:-0.01em}
+.modal-title span{display:block;font-size:12px;font-weight:400;color:var(--text-muted);letter-spacing:0;margin-top:3px}
+.modal-close{background:none;border:1px solid var(--border-bright);color:var(--text-muted);border-radius:6px;width:30px;height:30px;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;transition:all 0.15s;flex-shrink:0}
+.modal-close:hover{color:var(--text);border-color:var(--text-muted)}
+.modal-footer{display:flex;gap:8px;justify-content:flex-end;margin-top:24px;padding-top:20px;border-top:1px solid var(--border)}
+
+/* DATA SOURCE PANEL */
+.ds-panel{position:fixed;top:64px;right:0;bottom:0;width:400px;background:var(--surface);border-left:1px solid var(--border-bright);z-index:300;transform:translateX(100%);transition:transform 0.3s cubic-bezier(0.4,0,0.2,1);overflow-y:auto;padding:28px}
+.ds-panel.open{transform:translateX(0)}
+.ds-panel-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px}
+.ds-panel-title{font-size:14px;font-weight:800;letter-spacing:0.04em;text-transform:uppercase}
+.ds-source{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:16px;transition:border-color 0.2s}
+.ds-source:hover{border-color:var(--border-bright)}
+.ds-source.connected{border-color:rgba(127,186,0,0.35);background:rgba(127,186,0,0.05)}
+.ds-source-header{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.ds-logo{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.ds-source-name{font-size:14px;font-weight:700}
+.ds-source-desc{font-size:12px;color:var(--text-muted);margin-top:2px;font-weight:400}
+.ds-status{font-family:var(--font-mono);font-size:10px;letter-spacing:0.08em;padding:3px 8px;border-radius:4px;margin-left:auto}
+.ds-status.disconnected{background:rgba(255,255,255,0.05);color:var(--text-dim)}
+.ds-status.connected{background:rgba(127,186,0,0.12);color:var(--green)}
+.ds-status.syncing{background:rgba(255,185,0,0.12);color:var(--amber)}
+.ds-config{margin-top:12px}
+.ds-sync-row{display:flex;align-items:center;justify-content:space-between;margin-top:12px;gap:8px}
+.ds-last-sync{font-family:var(--font-mono);font-size:10px;color:var(--text-dim)}
+.ds-field-map{margin-top:12px;padding:12px;background:var(--surface);border-radius:var(--radius-sm);border:1px solid var(--border)}
+.ds-field-row{display:flex;align-items:center;gap:8px;margin-bottom:8px;font-size:12px}
+.ds-field-row:last-child{margin-bottom:0}
+.ds-field-arrow{color:var(--text-dim);font-family:var(--font-mono)}
+.ds-field-label{color:var(--text-muted);flex:1}
+.ds-field-value{color:var(--accent2);font-family:var(--font-mono);font-size:11px;flex:1}
+
+/* METRIC MANAGER */
+.metric-row{display:flex;align-items:center;gap:10px;padding:12px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);margin-bottom:8px;transition:border-color 0.2s}
+.metric-row:hover{border-color:var(--border-bright)}
+.metric-row .drag-handle{color:var(--text-dim);cursor:grab;font-size:14px;flex-shrink:0}
+.metric-row .metric-name{flex:1;font-size:13px;font-weight:600}
+.metric-row .metric-color{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+
+/* TOAST */
+.toast{position:fixed;bottom:32px;right:32px;background:var(--surface);border:1px solid var(--border-bright);border-radius:var(--radius-sm);padding:14px 20px;font-size:13px;z-index:999;transform:translateY(100px);opacity:0;transition:all 0.3s;box-shadow:0 8px 32px rgba(0,0,0,0.4);max-width:320px}
+.toast.show{transform:translateY(0);opacity:1}
+
+/* INLINE EDIT */
+.editable{cursor:text;border-bottom:1px dashed transparent;transition:border-color 0.2s;padding-bottom:1px}
+.editable:hover{border-color:var(--accent2)}
+
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--surface2);border-radius:3px}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-left">
+    <div class="nav-logo">
+      <div class="logo-mark"><span></span><span></span><span></span><span></span></div>
+      PDM Partner Hub
+      <span class="nav-badge">// SME&C</span>
+    </div>
+  </div>
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="showSection('pipeline',this)">Pipeline</button>
+    <button class="nav-tab" onclick="showSection('qbr',this)">QBR</button>
+    <button class="nav-tab" onclick="showSection('readiness',this)">AI Readiness</button>
+    <button class="nav-tab" onclick="showSection('gtm',this)">GTM Planner</button>
+  </div>
+  <div class="nav-right">
+    <button class="connector-btn" id="ds-nav-btn" onclick="toggleDSPanel()">
+      <span class="connector-dot"></span>
+      Data Sources
+    </button>
+  </div>
+</nav>
+
+<main>
+
+<!-- ══════════════════════ PIPELINE ══════════════════════ -->
+<div class="section active" id="section-pipeline">
+  <div class="page-header">
+    <div class="page-header-text">
+      <div class="eyebrow">// Co-sell Intelligence</div>
+      <h1>Partner <em>Pipeline</em> Dashboard</h1>
+      <p>Track co-sell opportunities, consumption targets, and deal velocity across all SME&C solution areas.</p>
+    </div>
+    <div class="page-header-actions">
+      <button class="btn btn-ghost btn-sm" onclick="openMetricManager()">⚙ Manage Metrics</button>
+      <button class="btn btn-ghost btn-sm" onclick="openStatsEditor()">✏ Edit Targets</button>
+    </div>
+  </div>
+
+  <div class="stats-row" id="stats-row"></div>
+
+  <div class="solution-pills">
+    <div class="solution-pill pill-infra active" onclick="filterPipeline(this,'all')">All Areas</div>
+    <div class="solution-pill pill-infra" onclick="filterPipeline(this,'infra')">App & Infrastructure</div>
+    <div class="solution-pill pill-data" onclick="filterPipeline(this,'data')">Data & AI</div>
+    <div class="solution-pill pill-mw" onclick="filterPipeline(this,'mw')">Modern Workplace</div>
+    <div class="solution-pill pill-biz" onclick="filterPipeline(this,'biz')">Business Applications</div>
+    <div class="solution-pill pill-sec" onclick="filterPipeline(this,'sec')">Security</div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">Active Co-Sell Deals<span>Live pipeline — edit, add or remove deals below</span></div>
+      <div class="card-actions">
+        <button class="btn btn-ghost btn-sm" onclick="openDealModal(null)">+ Add Deal</button>
+      </div>
+    </div>
+    <div style="overflow-x:auto;">
+      <table class="deal-table">
+        <thead>
+          <tr>
+            <th>Deal Name</th><th>Solution Area</th><th>Partner</th>
+            <th>Value (ARR)</th><th>Stage</th><th>Close Date</th><th>Status</th><th></th>
+          </tr>
+        </thead>
+        <tbody id="deal-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Consumption vs Target<span>By solution area — current quarter</span></div>
+        <button class="btn btn-ghost btn-sm" onclick="openConsumptionEditor()">✏ Edit</button>
+      </div>
+      <div id="consumption-bars"></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Log New Co-Sell Deal<span>Capture opportunity details</span></div>
+      </div>
+      <div class="form-group"><label class="form-label">Deal Name</label><input type="text" id="new-deal-name" placeholder="e.g. Avanade — Contoso M365 Migration"></div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Solution Area</label>
+          <select id="new-deal-area">
+            <option value="infra">App & Infrastructure</option><option value="data">Data & AI</option>
+            <option value="mw">Modern Workplace</option><option value="biz">Business Applications</option>
+            <option value="sec">Security</option>
+          </select>
+        </div>
+        <div class="form-group"><label class="form-label">Partner</label>
+          <select id="new-deal-partner"><option>Avanade</option><option>Accenture</option><option>Other SI</option></select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">ARR Value ($)</label><input type="number" id="new-deal-value" placeholder="450000"></div>
+        <div class="form-group"><label class="form-label">Close Date</label><input type="text" id="new-deal-date" placeholder="e.g. Mar 2026"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Stage</label>
+          <select id="new-deal-stage">
+            <option>Prospect</option><option>Qualified</option><option>Proposal</option><option>Negotiation</option><option>Closed Won</option>
+          </select>
+        </div>
+        <div class="form-group"><label class="form-label">RAG Status</label>
+          <select id="new-deal-rag">
+            <option value="green">Green — On Track</option><option value="amber">Amber — At Risk</option><option value="red">Red — Blocked</option>
+          </select>
+        </div>
+      </div>
+      <button class="btn btn-primary" onclick="quickAddDeal()">Add to Pipeline →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════ QBR ══════════════════════ -->
+<div class="section" id="section-qbr">
+  <div class="page-header">
+    <div class="page-header-text">
+      <div class="eyebrow">// Governance & Review</div>
+      <h1>QBR <em>Command Centre</em></h1>
+      <p>Drive quarterly business reviews with structured execution tracking, gap analysis, and exec-ready output.</p>
+    </div>
+    <div class="page-header-actions">
+      <button class="btn btn-ghost btn-sm" onclick="openQBRMetricEditor()">⚙ Edit Metrics</button>
+      <button class="btn btn-primary btn-sm" onclick="exportQBR()">Export QBR</button>
+    </div>
+  </div>
+
+  <div class="qbr-grid" id="qbr-blocks"></div>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">Gap Analysis by Solution Area<span>RAG status + gap to target — update each MBR/QBR</span></div>
+      <button class="btn btn-ghost btn-sm" onclick="openGapEditor()">✏ Edit Targets</button>
+    </div>
+    <div id="gap-analysis"></div>
+  </div>
+
+  <div class="two-col">
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Open Blockers & Escalations<span>Resolve before next QBR</span></div>
+      </div>
+      <div id="blockers-list"></div>
+      <div style="margin-top:16px;">
+        <div class="form-group"><label class="form-label">Log New Blocker</label><input type="text" id="new-blocker" placeholder="Describe the blocker or escalation..."></div>
+        <div style="display:flex;gap:8px;margin-top:8px;">
+          <select id="blocker-priority" style="max-width:140px;"><option>Critical</option><option>Standard</option><option>Low</option></select>
+          <button class="btn btn-primary btn-sm" onclick="addBlocker()">Log →</button>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Next QBR Agenda<span>Edit or reorder — share with exec team</span></div>
+        <button class="btn btn-ghost btn-sm" onclick="addAgendaItem()">+ Add</button>
+      </div>
+      <div id="agenda-list"></div>
+      <div style="margin-top:12px;"><input type="text" id="new-agenda" placeholder="Add agenda item..." onkeydown="if(event.key==='Enter')addAgendaItem()"></div>
+    </div>
+  </div>
+
+  <div class="export-banner">
+    <div class="text"><div class="title">QBR Package Ready</div><div class="desc">Generate an exec-ready QBR summary covering all solution areas, gap analysis, blockers, and next steps.</div></div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button class="btn btn-primary" onclick="exportQBR()">Generate QBR Summary</button>
+      <button class="btn btn-ghost" onclick="showToast('Shareable link copied ✓')">Share Link</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════ AI READINESS ══════════════════════ -->
+<div class="section" id="section-readiness">
+  <div class="page-header">
+    <div class="page-header-text">
+      <div class="eyebrow">// Partner Enablement</div>
+      <h1>Copilot & AI <em>Readiness</em> Benchmark</h1>
+      <p>Assess partner readiness across four dimensions and generate a prioritised action plan for AI transformation.</p>
+    </div>
+  </div>
+  <div class="readiness-grid">
+    <div class="readiness-card" id="rc-sales" onclick="selectReadinessDim('sales')">
+      <div class="readiness-icon">💼</div><div class="readiness-score" id="score-sales" style="color:#50e6ff;">—</div>
+      <div class="readiness-name">Sales Capability</div>
+      <div class="readiness-desc">Partner field team's ability to position, pitch, and close Copilot & AI solutions with enterprise customers.</div>
+    </div>
+    <div class="readiness-card" id="rc-tech" onclick="selectReadinessDim('tech')">
+      <div class="readiness-icon">⚙️</div><div class="readiness-score" id="score-tech" style="color:#50e6ff;">—</div>
+      <div class="readiness-name">Technical Certifications</div>
+      <div class="readiness-desc">Coverage of Microsoft AI and Copilot certifications across the partner's delivery and pre-sales team.</div>
+    </div>
+    <div class="readiness-card" id="rc-pipeline" onclick="selectReadinessDim('pipeline')">
+      <div class="readiness-icon">📈</div><div class="readiness-score" id="score-pipeline" style="color:#50e6ff;">—</div>
+      <div class="readiness-name">AI Pipeline</div>
+      <div class="readiness-desc">Volume and velocity of active AI/Copilot opportunities in co-sell with Microsoft, by stage and solution area.</div>
+    </div>
+    <div class="readiness-card" id="rc-consumption" onclick="selectReadinessDim('consumption')">
+      <div class="readiness-icon">🔥</div><div class="readiness-score" id="score-consumption" style="color:#50e6ff;">—</div>
+      <div class="readiness-name">Consumption & Adoption</div>
+      <div class="readiness-desc">Live Copilot seat activation and Azure AI workload consumption versus targets — the ultimate proof of partner impact.</div>
+    </div>
+  </div>
+  <div class="two-col">
+    <div class="card">
+      <div class="card-header"><div class="card-title">Score Each Dimension<span>Rate 1–10 based on current partner state</span></div></div>
+      <div class="assessment-area">
+        <div class="assessment-label"><span class="dim-name">💼 Sales Capability</span><span class="dim-score" id="disp-sales">5</span></div>
+        <input type="range" min="1" max="10" value="5" id="range-sales" oninput="updateReadiness()">
+        <div class="dim-hints"><span>No AI pitch capability</span><span>World-class AI GTM</span></div>
+      </div>
+      <div class="assessment-area">
+        <div class="assessment-label"><span class="dim-name">⚙️ Technical Certifications</span><span class="dim-score" id="disp-tech">5</span></div>
+        <input type="range" min="1" max="10" value="5" id="range-tech" oninput="updateReadiness()">
+        <div class="dim-hints"><span>No AI certs</span><span>Full AI cert coverage</span></div>
+      </div>
+      <div class="assessment-area">
+        <div class="assessment-label"><span class="dim-name">📈 AI Pipeline</span><span class="dim-score" id="disp-pipeline">5</span></div>
+        <input type="range" min="1" max="10" value="5" id="range-pipeline" oninput="updateReadiness()">
+        <div class="dim-hints"><span>No AI deals</span><span>Rich co-sell pipeline</span></div>
+      </div>
+      <div class="assessment-area">
+        <div class="assessment-label"><span class="dim-name">🔥 Consumption & Adoption</span><span class="dim-score" id="disp-consumption">5</span></div>
+        <input type="range" min="1" max="10" value="5" id="range-consumption" oninput="updateReadiness()">
+        <div class="dim-hints"><span>No live workloads</span><span>Exceeding targets</span></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="card-title">Readiness Output<span>Auto-generated — updates live</span></div></div>
+      <div style="margin-bottom:20px;">
+        <div class="form-label" style="margin-bottom:10px;">Overall Readiness Tier</div>
+        <div id="tier-output" class="tier-badge tier-developing">⚡ Developing</div>
+      </div>
+      <div style="margin-bottom:20px;">
+        <div class="form-label" style="margin-bottom:12px;">Dimension Scores</div>
+        <div id="readiness-output-bars"></div>
+      </div>
+      <div class="divider"></div>
+      <div class="form-label" style="margin-bottom:12px;">Prioritised Actions</div>
+      <div id="action-plan"></div>
+      <div style="margin-top:20px;display:flex;gap:10px;flex-wrap:wrap;">
+        <button class="btn btn-primary" onclick="exportReadiness()">Export Partner Report</button>
+        <button class="btn btn-ghost" onclick="showToast('Readiness link shared with partner ✓')">Share with Partner</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════ GTM PLANNER ══════════════════════ -->
+<div class="section" id="section-gtm">
+  <div class="page-header">
+    <div class="page-header-text">
+      <div class="eyebrow">// Campaign Architecture</div>
+      <h1>GTM <em>Co-Sell</em> Planner</h1>
+      <p>Architect and execute go-to-market campaigns with SI and SDC partners — from readiness through field activation to QBR review.</p>
+    </div>
+    <div class="page-header-actions">
+      <button class="btn btn-primary btn-sm" onclick="newCampaign()">New Campaign</button>
+    </div>
+  </div>
+  <div class="card" style="margin-bottom:24px;">
+    <div class="card-header"><div class="card-title">Campaign Builder<span>Step through each GTM phase — track completion per stage</span></div></div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:28px;" id="gtm-stages"></div>
+    <div id="gtm-stage-detail"></div>
+  </div>
+  <div class="two-col">
+    <div class="card">
+      <div class="card-header"><div class="card-title">Incentive & Programme Checklist<span>Microsoft partner levers to activate per campaign</span></div></div>
+      <div id="incentive-checklist"></div>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="card-title">Campaign Milestone Calendar<span>Key dates and owners</span></div></div>
+      <div id="milestone-list"></div>
+      <div style="margin-top:14px;display:flex;gap:8px;">
+        <input type="text" id="new-milestone" placeholder="Add milestone..." style="flex:1;" onkeydown="if(event.key==='Enter')addMilestone()">
+        <button class="btn btn-ghost btn-sm btn-icon" onclick="addMilestone()">+</button>
+      </div>
+    </div>
+  </div>
+  <div class="export-banner">
+    <div class="text"><div class="title">Campaign Plan Ready to Share</div><div class="desc">Export the full GTM plan — stages, incentives, milestones, and field activation checklist — for partner-facing alignment.</div></div>
+    <button class="btn btn-primary" onclick="exportGTM()">Export GTM Plan</button>
+  </div>
+</div>
+
+</main>
+
+<!-- ══════════════════════ DATA SOURCE PANEL ══════════════════════ -->
+<div class="ds-panel" id="ds-panel">
+  <div class="ds-panel-header">
+    <div class="ds-panel-title">Data Sources</div>
+    <button class="modal-close" onclick="toggleDSPanel()">✕</button>
+  </div>
+
+  <div style="font-size:12px;color:var(--text-muted);margin-bottom:20px;line-height:1.5;">
+    Connect live data sources to automatically populate and refresh dashboard metrics. Configure field mappings for each connection below.
+  </div>
+
+  <!-- DYNAMICS 365 -->
+  <div class="ds-source" id="ds-dynamics">
+    <div class="ds-source-header">
+      <div class="ds-logo" style="background:rgba(0,120,212,0.15);">🔷</div>
+      <div>
+        <div class="ds-source-name">Dynamics 365 CRM</div>
+        <div class="ds-source-desc">Opportunities, accounts, pipeline stages</div>
+      </div>
+      <span class="ds-status disconnected" id="dyn-status">Disconnected</span>
+    </div>
+    <div class="ds-config">
+      <div class="form-group"><label class="form-label">Environment URL</label><input type="text" id="dyn-url" placeholder="https://org.crm.dynamics.com"></div>
+      <div class="form-group"><label class="form-label">Client ID (App Registration)</label><input type="text" id="dyn-client" placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"></div>
+      <div class="form-group"><label class="form-label">Sync Entity</label>
+        <select id="dyn-entity">
+          <option>opportunity</option><option>account</option><option>msfp_alert</option><option>Custom table</option>
+        </select>
+      </div>
+      <div class="ds-field-map">
+        <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.1em;color:var(--text-muted);margin-bottom:10px;">FIELD MAPPING</div>
+        <div class="ds-field-row"><span class="ds-field-label">Deal Name</span><span class="ds-field-arrow">→</span><span class="ds-field-value">name</span></div>
+        <div class="ds-field-row"><span class="ds-field-label">ARR Value</span><span class="ds-field-arrow">→</span><span class="ds-field-value">estimatedvalue</span></div>
+        <div class="ds-field-row"><span class="ds-field-label">Stage</span><span class="ds-field-arrow">→</span><span class="ds-field-value">stagename</span></div>
+        <div class="ds-field-row"><span class="ds-field-label">Close Date</span><span class="ds-field-arrow">→</span><span class="ds-field-value">estimatedclosedate</span></div>
+        <div class="ds-field-row"><span class="ds-field-label">RAG Status</span><span class="ds-field-arrow">→</span><span class="ds-field-value">statuscode</span></div>
+      </div>
+      <div class="ds-sync-row">
+        <span class="ds-last-sync" id="dyn-last-sync">Never synced</span>
+        <div style="display:flex;gap:8px;">
+          <button class="btn btn-ghost btn-sm" onclick="testConnection('dynamics')">Test</button>
+          <button class="btn btn-primary btn-sm" onclick="connectSource('dynamics')">Connect</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SHAREPOINT -->
+  <div class="ds-source" id="ds-sharepoint">
+    <div class="ds-source-header">
+      <div class="ds-logo" style="background:rgba(0,164,239,0.15);">📋</div>
+      <div>
+        <div class="ds-source-name">SharePoint Lists</div>
+        <div class="ds-source-desc">QBR data, account plans, blockers</div>
+      </div>
+      <span class="ds-status disconnected" id="sp-status">Disconnected</span>
+    </div>
+    <div class="ds-config">
+      <div class="form-group"><label class="form-label">Site URL</label><input type="text" id="sp-url" placeholder="https://tenant.sharepoint.com/sites/pdm"></div>
+      <div class="form-group"><label class="form-label">List Name</label><input type="text" id="sp-list" placeholder="e.g. PartnerPipeline"></div>
+      <div class="form-group"><label class="form-label">Sync Scope</label>
+        <select id="sp-scope">
+          <option>Pipeline deals</option><option>QBR metrics</option><option>Blockers & escalations</option><option>All lists</option>
+        </select>
+      </div>
+      <div class="ds-field-map">
+        <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.1em;color:var(--text-muted);margin-bottom:10px;">FIELD MAPPING</div>
+        <div class="ds-field-row"><span class="ds-field-label">Deal Name</span><span class="ds-field-arrow">→</span><span class="ds-field-value">Title</span></div>
+        <div class="ds-field-row"><span class="ds-field-label">ARR Value</span><span class="ds-field-arrow">→</span><span class="ds-field-value">ARRValue</span></div>
+        <div class="ds-field-row"><span class="ds-field-label">Solution Area</span><span class="ds-field-arrow">→</span><span class="ds-field-value">SolutionArea</span></div>
+        <div class="ds-field-row"><span class="ds-field-label">RAG Status</span><span class="ds-field-arrow">→</span><span class="ds-field-value">RAGStatus</span></div>
+      </div>
+      <div class="ds-sync-row">
+        <span class="ds-last-sync" id="sp-last-sync">Never synced</span>
+        <div style="display:flex;gap:8px;">
+          <button class="btn btn-ghost btn-sm" onclick="testConnection('sharepoint')">Test</button>
+          <button class="btn btn-primary btn-sm" onclick="connectSource('sharepoint')">Connect</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SAAS / REST API -->
+  <div class="ds-source" id="ds-saas">
+    <div class="ds-source-header">
+      <div class="ds-logo" style="background:rgba(80,230,255,0.12);">🔌</div>
+      <div>
+        <div class="ds-source-name">SaaS / REST API</div>
+        <div class="ds-source-desc">Salesforce, HubSpot, or any REST source</div>
+      </div>
+      <span class="ds-status disconnected" id="saas-status">Disconnected</span>
+    </div>
+    <div class="ds-config">
+      <div class="form-group"><label class="form-label">SaaS Platform</label>
+        <select id="saas-type">
+          <option>Salesforce</option><option>HubSpot</option><option>Pipedrive</option>
+          <option>Partner Center API</option><option>Custom REST API</option>
+        </select>
+      </div>
+      <div class="form-group"><label class="form-label">API Endpoint URL</label><input type="text" id="saas-url" placeholder="https://api.example.com/v1/opportunities"></div>
+      <div class="form-group"><label class="form-label">Auth Method</label>
+        <select id="saas-auth"><option>Bearer Token</option><option>OAuth 2.0</option><option>API Key</option><option>Basic Auth</option></select>
+      </div>
+      <div class="form-group"><label class="form-label">Token / API Key</label><input type="text" id="saas-token" placeholder="Paste token or key..."></div>
+      <div class="form-group"><label class="form-label">Refresh Interval</label>
+        <select id="saas-refresh"><option>Manual</option><option>Every 15 min</option><option>Every hour</option><option>Daily</option></select>
+      </div>
+      <div class="ds-sync-row">
+        <span class="ds-last-sync" id="saas-last-sync">Never synced</span>
+        <div style="display:flex;gap:8px;">
+          <button class="btn btn-ghost btn-sm" onclick="testConnection('saas')">Test</button>
+          <button class="btn btn-primary btn-sm" onclick="connectSource('saas')">Connect</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top:20px;padding:16px;background:rgba(80,230,255,0.05);border:1px solid rgba(80,230,255,0.12);border-radius:var(--radius-sm);">
+    <div style="font-size:12px;color:var(--text-muted);line-height:1.5;">
+      <strong style="color:var(--accent2);">Note:</strong> In production, connect these sources via Microsoft Power Automate flows, Azure Logic Apps, or direct API calls. This UI provides the configuration interface — your backend service handles authentication and data refresh.
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════ MODALS ══════════════════════ -->
+
+<!-- STAT EDITOR MODAL -->
+<div class="modal-overlay" id="modal-stats">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Edit Dashboard Metrics<span>Set initial baseline, current value, and target for each KPI</span></div>
+      <button class="modal-close" onclick="closeModal('modal-stats')">✕</button>
+    </div>
+    <div id="stats-editor-body"></div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modal-stats')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveStatsEdit()">Save Changes</button>
+    </div>
+  </div>
+</div>
+
+<!-- METRIC MANAGER MODAL -->
+<div class="modal-overlay" id="modal-metrics">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Manage Dashboard Metrics<span>Add, edit, or remove the KPIs shown on your dashboard</span></div>
+      <button class="modal-close" onclick="closeModal('modal-metrics')">✕</button>
+    </div>
+    <div id="metrics-manager-body"></div>
+    <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border);">
+      <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.1em;color:var(--text-muted);margin-bottom:10px;">ADD NEW METRIC</div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Label</label><input type="text" id="new-metric-label" placeholder="e.g. Win Rate"></div>
+        <div class="form-group"><label class="form-label">Unit</label>
+          <select id="new-metric-unit"><option>$</option><option>%</option><option>#</option><option>x</option></select>
+        </div>
+      </div>
+      <div class="form-row-3">
+        <div class="form-group"><label class="form-label">Initial</label><input type="text" id="new-metric-init" placeholder="0"></div>
+        <div class="form-group"><label class="form-label">Current</label><input type="text" id="new-metric-current" placeholder="0"></div>
+        <div class="form-group"><label class="form-label">Target</label><input type="text" id="new-metric-target" placeholder="0"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Accent Colour</label>
+          <select id="new-metric-color">
+            <option value="#0078d4">Blue (Accent)</option><option value="#50e6ff">Cyan</option>
+            <option value="#7fba00">Green</option><option value="#ffb900">Amber</option><option value="#e74c3c">Red</option>
+          </select>
+        </div>
+        <div class="form-group"><label class="form-label">Subtitle</label><input type="text" id="new-metric-sub" placeholder="e.g. vs last quarter"></div>
+      </div>
+      <button class="btn btn-primary btn-sm" onclick="addMetric()">+ Add Metric</button>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modal-metrics')">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- DEAL EDIT MODAL -->
+<div class="modal-overlay" id="modal-deal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="deal-modal-title">Edit Deal<span>Update co-sell opportunity details</span></div>
+      <button class="modal-close" onclick="closeModal('modal-deal')">✕</button>
+    </div>
+    <div class="form-group"><label class="form-label">Deal Name</label><input type="text" id="edit-deal-name"></div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">Solution Area</label>
+        <select id="edit-deal-area">
+          <option value="infra">App & Infrastructure</option><option value="data">Data & AI</option>
+          <option value="mw">Modern Workplace</option><option value="biz">Business Applications</option><option value="sec">Security</option>
+        </select>
+      </div>
+      <div class="form-group"><label class="form-label">Partner</label>
+        <select id="edit-deal-partner"><option>Avanade</option><option>Accenture</option><option>Other SI</option></select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">ARR Value ($)</label><input type="number" id="edit-deal-value"></div>
+      <div class="form-group"><label class="form-label">Close Date</label><input type="text" id="edit-deal-date"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">Stage</label>
+        <select id="edit-deal-stage"><option>Prospect</option><option>Qualified</option><option>Proposal</option><option>Negotiation</option><option>Closed Won</option></select>
+      </div>
+      <div class="form-group"><label class="form-label">RAG Status</label>
+        <select id="edit-deal-rag"><option value="green">Green — On Track</option><option value="amber">Amber — At Risk</option><option value="red">Red — Blocked</option></select>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modal-deal')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveDeal()">Save Deal</button>
+    </div>
+  </div>
+</div>
+
+<!-- CONSUMPTION EDITOR MODAL -->
+<div class="modal-overlay" id="modal-consumption">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Edit Consumption Targets<span>Set initial, current, and target % for each solution area</span></div>
+      <button class="modal-close" onclick="closeModal('modal-consumption')">✕</button>
+    </div>
+    <div id="consumption-editor-body"></div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modal-consumption')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveConsumption()">Save Changes</button>
+    </div>
+  </div>
+</div>
+
+<!-- GAP EDITOR MODAL -->
+<div class="modal-overlay" id="modal-gap">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Edit Gap Analysis Targets<span>Update target and actual values per solution area</span></div>
+      <button class="modal-close" onclick="closeModal('modal-gap')">✕</button>
+    </div>
+    <div id="gap-editor-body"></div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modal-gap')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveGap()">Save Changes</button>
+    </div>
+  </div>
+</div>
+
+<!-- QBR METRIC EDITOR MODAL -->
+<div class="modal-overlay" id="modal-qbr-metrics">
+  <div class="modal" style="max-width:640px;">
+    <div class="modal-header">
+      <div class="modal-title">Edit QBR Metrics<span>Add, edit or remove metrics in each QBR block</span></div>
+      <button class="modal-close" onclick="closeModal('modal-qbr-metrics')">✕</button>
+    </div>
+    <div id="qbr-metrics-editor-body"></div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modal-qbr-metrics')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveQBRMetrics()">Save Changes</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ════════════════════════════════════════════
+// STATE
+// ════════════════════════════════════════════
+let stats = [
+  { id:'pipeline', label:'Total Pipeline', value:'$24.7M', sub:'▲ 18% vs last quarter', color:'#0078d4', init:'$20.9M', target:'$30M' },
+  { id:'cosell',   label:'Deals in Co-sell', value:'34', sub:'12 requiring action', color:'#7fba00', init:'22', target:'50' },
+  { id:'quota',    label:'Quota Attainment', value:'71%', sub:'Target: 100% by Q-end', color:'#ffb900', init:'0%', target:'100%' },
+  { id:'arr',      label:'Consumption ARR', value:'$8.2M', sub:'Gap: $1.8M to target', color:'#50e6ff', init:'$0', target:'$10M' },
+  { id:'escalate', label:'Escalations Open', value:'3', sub:'2 critical / 1 standard', color:'#e74c3c', init:'0', target:'0' },
+];
+
+let deals = [
+  { name:'Contoso M365 Copilot Rollout', area:'mw', partner:'Avanade', value:2400000, stage:'Proposal', date:'Mar 2026', rag:'green' },
+  { name:'Fabrikam Azure AI Platform', area:'data', partner:'Avanade', value:1800000, stage:'Negotiation', date:'Feb 2026', rag:'amber' },
+  { name:'Northwind Security Modernisation', area:'sec', partner:'Accenture', value:950000, stage:'Qualified', date:'Apr 2026', rag:'green' },
+  { name:'Alpine Dynamics Cloud Migration', area:'infra', partner:'Avanade', value:3100000, stage:'Proposal', date:'Mar 2026', rag:'red' },
+  { name:'Woodgrove D365 Implementation', area:'biz', partner:'Accenture', value:720000, stage:'Prospect', date:'May 2026', rag:'amber' },
+  { name:'Tailspin Sentinel Deployment', area:'sec', partner:'Avanade', value:480000, stage:'Closed Won', date:'Jan 2026', rag:'green' },
+  { name:'Relecloud Fabric & Purview', area:'data', partner:'Avanade', value:1350000, stage:'Proposal', date:'Apr 2026', rag:'green' },
+];
+
+let consumption = [
+  { area:'App & Infrastructure', pct:82, init:0, target:100, color:'#50b3f0' },
+  { area:'Data & AI', pct:67, init:0, target:100, color:'#a3d44a' },
+  { area:'Modern Workplace', pct:54, init:0, target:100, color:'#50e6ff' },
+  { area:'Business Applications', pct:91, init:0, target:100, color:'#ffb900' },
+  { area:'Security', pct:43, init:0, target:100, color:'#e74c3c' },
+];
+
+let gapData = [
+  { area:'App & Infrastructure', targetVal:8.0, actual:6.6, rag:'amber' },
+  { area:'Data & AI', targetVal:6.0, actual:4.0, rag:'red' },
+  { area:'Modern Workplace', targetVal:5.0, actual:4.3, rag:'amber' },
+  { area:'Business Applications', targetVal:3.0, actual:2.9, rag:'green' },
+  { area:'Security', targetVal:2.7, actual:1.1, rag:'red' },
+];
+
+let qbrBlocks = [
+  { title:'Revenue & Pipeline', metrics:[
+    { label:'Pipeline Coverage', value:'3.2x', color:'#50e6ff', init:'0x', target:'4x' },
+    { label:'Q Revenue', value:'$6.1M', color:'#a3d44a', init:'$0', target:'$7M' },
+    { label:'vs Target', value:'-$0.9M', color:'#ffb900', init:'—', target:'$0' },
+    { label:'Deals Closed', value:'11', color:'', init:'0', target:'18' },
+    { label:'Avg Deal Size', value:'$554K', color:'#50b3f0', init:'$0', target:'$600K' },
+  ]},
+  { title:'Partner Capability', metrics:[
+    { label:'Certifications (Target)', value:'87 / 100', color:'#a3d44a', init:'60', target:'100' },
+    { label:'Sales Activated', value:'142', color:'#a3d44a', init:'80', target:'200' },
+    { label:'Onboarded this Q', value:'23', color:'', init:'0', target:'30' },
+    { label:'MCI Incentives Used', value:'68%', color:'#ffb900', init:'0%', target:'100%' },
+    { label:'Co-op Funds Claimed', value:'41%', color:'#e74c3c', init:'0%', target:'90%' },
+  ]},
+  { title:'Consumption & AI', metrics:[
+    { label:'M365 Copilot Seats', value:'1,240', color:'#50e6ff', init:'0', target:'2,000' },
+    { label:'Target Seats', value:'2,000', color:'#ffb900', init:'—', target:'2,000' },
+    { label:'Azure Consumed', value:'$3.8M', color:'#a3d44a', init:'$0', target:'$5M' },
+    { label:'AI Workloads Live', value:'7', color:'', init:'0', target:'15' },
+    { label:'Readiness Score', value:'Developing', color:'#ffb900', init:'—', target:'Advanced' },
+  ]},
+];
+
+let blockers = [
+  { text:'Azure subscription provisioning delay — Fabrikam deal at risk', priority:'Critical', done:false },
+  { text:'MCI incentive approval pending > 3 weeks — Avanade team escalating', priority:'Critical', done:false },
+  { text:'Partner enablement materials not localised for LATAM field team', priority:'Standard', done:false },
+];
+
+let agenda = [
+  'Performance vs Target — all solution areas',
+  'Top deal review & deal coaching',
+  'AI / Copilot readiness update',
+  'Blockers & escalation resolution',
+  'Incentive and co-op fund utilisation',
+  'Next quarter priorities & GTM alignment',
+];
+
+let readinessScores = { sales:5, tech:5, pipeline:5, consumption:5 };
+let activeStage = 'readiness';
+let currentFilter = 'all';
+let editingDealIdx = null;
+
+const AREA_META = {
+  infra:{ label:'App & Infra', cls:'pill-infra', color:'#50b3f0' },
+  data: { label:'Data & AI', cls:'pill-data', color:'#a3d44a' },
+  mw:  { label:'Modern WP', cls:'pill-mw', color:'#50e6ff' },
+  biz: { label:'Biz Apps', cls:'pill-biz', color:'#ffb900' },
+  sec: { label:'Security', cls:'pill-sec', color:'#e74c3c' },
+};
+
+// ════════════════════════════════════════════
+// NAV & MODAL UTILS
+// ════════════════════════════════════════════
+function showSection(id, el) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('section-' + id).classList.add('active');
+  if(el) el.classList.add('active');
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+// Close modal on overlay click
+document.querySelectorAll('.modal-overlay').forEach(el => {
+  el.addEventListener('click', e => { if(e.target === el) el.classList.remove('open'); });
+});
+
+function toggleDSPanel() {
+  const p = document.getElementById('ds-panel');
+  p.classList.toggle('open');
+}
+
+// ════════════════════════════════════════════
+// STATS / KPI RENDERING
+// ════════════════════════════════════════════
+function renderStats() {
+  document.getElementById('stats-row').innerHTML = stats.map((s, i) => `
+    <div class="stat-card" style="--accent-color:${s.color};">
+      <div class="stat-card-actions">
+        <button class="stat-icon-btn" onclick="event.stopPropagation();editSingleStat(${i})">✏</button>
+        <button class="stat-icon-btn" onclick="event.stopPropagation();removeStat(${i})">✕</button>
+      </div>
+      <div class="stat-label">${s.label}</div>
+      <div class="stat-value" style="color:${s.color};">${s.value}</div>
+      <div class="stat-sub">${s.sub}</div>
+      <div class="stat-targets">
+        <span class="stat-target-item init">Base: ${s.init}</span>
+        <span class="stat-target-item tgt">Target: ${s.target}</span>
+      </div>
+    </div>
+  `).join('');
+}
+
+function openStatsEditor() {
+  document.getElementById('stats-editor-body').innerHTML = stats.map((s, i) => `
+    <div style="padding:16px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);margin-bottom:12px;">
+      <div style="font-weight:700;font-size:13px;margin-bottom:12px;color:var(--accent2);">${s.label}</div>
+      <div class="form-row-3">
+        <div class="form-group"><label class="form-label">Baseline / Initial</label><input type="text" id="se-init-${i}" value="${s.init}"></div>
+        <div class="form-group"><label class="form-label">Current Value</label><input type="text" id="se-val-${i}" value="${s.value}"></div>
+        <div class="form-group"><label class="form-label">Target</label><input type="text" id="se-tgt-${i}" value="${s.target}"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Subtitle</label><input type="text" id="se-sub-${i}" value="${s.sub}"></div>
+        <div class="form-group"><label class="form-label">Label</label><input type="text" id="se-lbl-${i}" value="${s.label}"></div>
+      </div>
+    </div>
+  `).join('');
+  openModal('modal-stats');
+}
+
+function editSingleStat(i) { openStatsEditor(); }
+
+function saveStatsEdit() {
+  stats.forEach((s, i) => {
+    s.init  = document.getElementById(`se-init-${i}`).value;
+    s.value = document.getElementById(`se-val-${i}`).value;
+    s.target= document.getElementById(`se-tgt-${i}`).value;
+    s.sub   = document.getElementById(`se-sub-${i}`).value;
+    s.label = document.getElementById(`se-lbl-${i}`).value;
+  });
+  renderStats(); closeModal('modal-stats'); showToast('Dashboard metrics updated ✓');
+}
+
+function removeStat(i) {
+  if(!confirm('Remove this metric from the dashboard?')) return;
+  stats.splice(i, 1); renderStats(); showToast('Metric removed');
+}
+
+function openMetricManager() {
+  renderMetricManager(); openModal('modal-metrics');
+}
+
+function renderMetricManager() {
+  document.getElementById('metrics-manager-body').innerHTML = `
+    <div style="margin-bottom:12px;font-family:var(--font-mono);font-size:10px;letter-spacing:0.1em;color:var(--text-muted);">CURRENT METRICS — hover to edit or remove</div>
+    ${stats.map((s, i) => `
+      <div class="metric-row">
+        <span class="drag-handle">⠿</span>
+        <span class="metric-color" style="background:${s.color};"></span>
+        <span class="metric-name">${s.label}</span>
+        <span style="font-family:var(--font-mono);font-size:12px;color:var(--accent2);margin-right:8px;">${s.value}</span>
+        <button class="stat-icon-btn" onclick="editSingleStat(${i});closeModal('modal-metrics');">✏</button>
+        <button class="stat-icon-btn btn-danger" onclick="removeStat(${i});renderMetricManager();">✕</button>
+      </div>
+    `).join('')}
+  `;
+}
+
+function addMetric() {
+  const label   = document.getElementById('new-metric-label').value.trim();
+  const unit    = document.getElementById('new-metric-unit').value;
+  const init    = document.getElementById('new-metric-init').value || '0';
+  const current = document.getElementById('new-metric-current').value || '0';
+  const target  = document.getElementById('new-metric-target').value || '0';
+  const color   = document.getElementById('new-metric-color').value;
+  const sub     = document.getElementById('new-metric-sub').value;
+  if(!label) { showToast('Please enter a metric label'); return; }
+  const fmt = v => unit === '$' ? '$'+v : unit === '%' ? v+'%' : unit === 'x' ? v+'x' : v;
+  stats.push({ id:'custom_'+Date.now(), label, value:fmt(current), sub, color, init:fmt(init), target:fmt(target) });
+  renderStats(); renderMetricManager();
+  ['label','init','current','target','sub'].forEach(f => document.getElementById('new-metric-'+f).value = '');
+  showToast('Metric added ✓');
+}
+
+// ════════════════════════════════════════════
+// DEALS
+// ════════════════════════════════════════════
+function ragBadge(r) {
+  const m = { green:'rag-green', amber:'rag-amber', red:'rag-red' };
+  const l = { green:'On Track', amber:'At Risk', red:'Blocked' };
+  return `<span class="rag ${m[r]}">${l[r]}</span>`;
+}
+
+function renderDeals(filter) {
+  const list = filter === 'all' ? deals : deals.filter(d => d.area === filter);
+  document.getElementById('deal-tbody').innerHTML = list.map((d, i) => {
+    const realIdx = deals.indexOf(d);
+    return `
+      <tr>
+        <td class="deal-name">${d.name}</td>
+        <td><span class="solution-pill ${AREA_META[d.area].cls}" style="cursor:default;font-size:10px;padding:4px 10px;">${AREA_META[d.area].label}</span></td>
+        <td>${d.partner}</td>
+        <td class="deal-value">$${(d.value/1000000).toFixed(2)}M</td>
+        <td><span class="deal-stage">${d.stage}</span></td>
+        <td style="font-family:var(--font-mono);font-size:12px;color:var(--text-muted);">${d.date}</td>
+        <td>${ragBadge(d.rag)}</td>
+        <td><div class="tbl-actions">
+          <button class="stat-icon-btn" onclick="openDealModal(${realIdx})">✏</button>
+          <button class="stat-icon-btn btn-danger" onclick="removeDeal(${realIdx})">✕</button>
+        </div></td>
+      </tr>
+    `;
+  }).join('');
+}
+
+function openDealModal(idx) {
+  editingDealIdx = idx;
+  const d = idx !== null ? deals[idx] : null;
+  document.getElementById('deal-modal-title').innerHTML = d
+    ? 'Edit Deal<span>Update co-sell opportunity details</span>'
+    : 'Add Deal<span>Log a new co-sell opportunity</span>';
+  document.getElementById('edit-deal-name').value = d ? d.name : '';
+  document.getElementById('edit-deal-area').value = d ? d.area : 'infra';
+  document.getElementById('edit-deal-partner').value = d ? d.partner : 'Avanade';
+  document.getElementById('edit-deal-value').value = d ? d.value : '';
+  document.getElementById('edit-deal-date').value = d ? d.date : '';
+  document.getElementById('edit-deal-stage').value = d ? d.stage : 'Prospect';
+  document.getElementById('edit-deal-rag').value = d ? d.rag : 'green';
+  openModal('modal-deal');
+}
+
+function saveDeal() {
+  const name = document.getElementById('edit-deal-name').value.trim();
+  if(!name) { showToast('Please enter a deal name'); return; }
+  const obj = {
+    name, area: document.getElementById('edit-deal-area').value,
+    partner: document.getElementById('edit-deal-partner').value,
+    value: parseInt(document.getElementById('edit-deal-value').value) || 500000,
+    date: document.getElementById('edit-deal-date').value || 'TBD',
+    stage: document.getElementById('edit-deal-stage').value,
+    rag: document.getElementById('edit-deal-rag').value,
+  };
+  if(editingDealIdx !== null) { deals[editingDealIdx] = obj; }
+  else { deals.unshift(obj); }
+  renderDeals(currentFilter); closeModal('modal-deal');
+  showToast(editingDealIdx !== null ? 'Deal updated ✓' : 'Deal added ✓');
+}
+
+function removeDeal(i) {
+  if(!confirm('Remove this deal from the pipeline?')) return;
+  deals.splice(i, 1); renderDeals(currentFilter); showToast('Deal removed');
+}
+
+function quickAddDeal() {
+  const name = document.getElementById('new-deal-name').value.trim();
+  if(!name) { showToast('Please enter a deal name'); return; }
+  deals.unshift({
+    name, area: document.getElementById('new-deal-area').value,
+    partner: document.getElementById('new-deal-partner').value,
+    value: parseInt(document.getElementById('new-deal-value').value) || 500000,
+    date: document.getElementById('new-deal-date').value || 'TBD',
+    stage: document.getElementById('new-deal-stage').value,
+    rag: document.getElementById('new-deal-rag').value,
+  });
+  renderDeals(currentFilter);
+  ['new-deal-name','new-deal-value','new-deal-date'].forEach(id => document.getElementById(id).value = '');
+  showToast('Deal added to pipeline ✓');
+}
+
+function filterPipeline(el, area) {
+  document.querySelectorAll('.solution-pills .solution-pill').forEach(p => p.classList.remove('active'));
+  el.classList.add('active'); currentFilter = area; renderDeals(area);
+}
+
+// ════════════════════════════════════════════
+// CONSUMPTION
+// ════════════════════════════════════════════
+function renderConsumption() {
+  document.getElementById('consumption-bars').innerHTML = consumption.map(c => `
+    <div class="progress-wrap">
+      <div class="progress-label">
+        <span class="name">${c.area}</span>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span style="font-family:var(--font-mono);font-size:10px;color:var(--text-dim);">Base:${c.init}%</span>
+          <span class="pct">${c.pct}% / ${c.target}%</span>
+        </div>
+      </div>
+      <div class="progress-track" style="height:8px;">
+        <div class="progress-fill" style="width:0%;background:${c.color};" data-target="${Math.min(100,(c.pct/c.target)*100)}"></div>
+      </div>
+    </div>
+  `).join('');
+  setTimeout(() => {
+    document.querySelectorAll('.progress-fill').forEach(el => { el.style.width = el.dataset.target + '%'; });
+  }, 100);
+}
+
+function openConsumptionEditor() {
+  document.getElementById('consumption-editor-body').innerHTML = consumption.map((c, i) => `
+    <div style="padding:14px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);margin-bottom:10px;">
+      <div style="font-weight:700;font-size:12px;margin-bottom:10px;">${c.area}</div>
+      <div class="form-row-3">
+        <div class="form-group"><label class="form-label">Initial %</label><input type="number" id="ce-init-${i}" value="${c.init}" min="0" max="100"></div>
+        <div class="form-group"><label class="form-label">Current %</label><input type="number" id="ce-pct-${i}" value="${c.pct}" min="0" max="200"></div>
+        <div class="form-group"><label class="form-label">Target %</label><input type="number" id="ce-tgt-${i}" value="${c.target}" min="0" max="200"></div>
+      </div>
+    </div>
+  `).join('');
+  openModal('modal-consumption');
+}
+
+function saveConsumption() {
+  consumption.forEach((c, i) => {
+    c.init   = parseInt(document.getElementById(`ce-init-${i}`).value) || 0;
+    c.pct    = parseInt(document.getElementById(`ce-pct-${i}`).value) || 0;
+    c.target = parseInt(document.getElementById(`ce-tgt-${i}`).value) || 100;
+  });
+  renderConsumption(); closeModal('modal-consumption'); showToast('Consumption targets updated ✓');
+}
+
+// ════════════════════════════════════════════
+// QBR BLOCKS
+// ════════════════════════════════════════════
+function renderQBRBlocks() {
+  document.getElementById('qbr-blocks').innerHTML = qbrBlocks.map(b => `
+    <div class="qbr-block">
+      <div class="qbr-block-title">${b.title}</div>
+      ${b.metrics.map(m => `
+        <div class="qbr-metric">
+          <span class="label">${m.label}</span>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span class="value" style="${m.color?'color:'+m.color+';':''}">${m.value}</span>
+          </div>
+        </div>
+      `).join('')}
+    </div>
+  `).join('');
+}
+
+function openQBRMetricEditor() {
+  document.getElementById('qbr-metrics-editor-body').innerHTML = qbrBlocks.map((b, bi) => `
+    <div style="margin-bottom:20px;padding:16px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);">
+      <div style="font-weight:700;font-size:13px;color:var(--accent2);margin-bottom:14px;">${b.title}</div>
+      ${b.metrics.map((m, mi) => `
+        <div style="display:flex;gap:8px;align-items:center;margin-bottom:8px;flex-wrap:wrap;">
+          <input type="text" style="flex:2;min-width:120px;" id="qm-lbl-${bi}-${mi}" value="${m.label}" placeholder="Metric label">
+          <input type="text" style="flex:1;min-width:80px;" id="qm-init-${bi}-${mi}" value="${m.init||'—'}" placeholder="Initial">
+          <input type="text" style="flex:1;min-width:80px;" id="qm-val-${bi}-${mi}" value="${m.value}" placeholder="Current">
+          <input type="text" style="flex:1;min-width:80px;" id="qm-tgt-${bi}-${mi}" value="${m.target||'—'}" placeholder="Target">
+          <button class="btn btn-danger btn-sm btn-icon" onclick="removeQBRMetric(${bi},${mi})">✕</button>
+        </div>
+      `).join('')}
+      <button class="btn btn-ghost btn-sm" onclick="addQBRMetric(${bi})" style="margin-top:6px;">+ Add Metric</button>
+    </div>
+  `).join('');
+  openModal('modal-qbr-metrics');
+}
+
+function removeQBRMetric(bi, mi) {
+  qbrBlocks[bi].metrics.splice(mi, 1); openQBRMetricEditor();
+}
+
+function addQBRMetric(bi) {
+  qbrBlocks[bi].metrics.push({ label:'New Metric', value:'—', color:'', init:'—', target:'—' });
+  openQBRMetricEditor();
+}
+
+function saveQBRMetrics() {
+  qbrBlocks.forEach((b, bi) => {
+    b.metrics.forEach((m, mi) => {
+      m.label = document.getElementById(`qm-lbl-${bi}-${mi}`)?.value || m.label;
+      m.init  = document.getElementById(`qm-init-${bi}-${mi}`)?.value || m.init;
+      m.value = document.getElementById(`qm-val-${bi}-${mi}`)?.value || m.value;
+      m.target= document.getElementById(`qm-tgt-${bi}-${mi}`)?.value || m.target;
+    });
+  });
+  renderQBRBlocks(); closeModal('modal-qbr-metrics'); showToast('QBR metrics updated ✓');
+}
+
+// ════════════════════════════════════════════
+// GAP ANALYSIS
+// ════════════════════════════════════════════
+function computeGapRAG(actual, target) {
+  const pct = actual / target;
+  if(pct >= 0.95) return 'green';
+  if(pct >= 0.75) return 'amber';
+  return 'red';
+}
+
+function renderGapAnalysis() {
+  document.getElementById('gap-analysis').innerHTML = `
+    <div style="overflow-x:auto;">
+    <table class="deal-table">
+      <thead><tr><th>Solution Area</th><th>Initial</th><th>Actual ($M)</th><th>Target ($M)</th><th>Gap</th><th>Status</th></tr></thead>
+      <tbody>
+        ${gapData.map(g => {
+          const gap = (g.actual - g.targetVal).toFixed(1);
+          const rag = computeGapRAG(g.actual, g.targetVal);
+          return `
+            <tr>
+              <td style="font-weight:600;">${g.area}</td>
+              <td style="font-family:var(--font-mono);font-size:12px;color:var(--text-dim);">$${(g.targetVal*0.3).toFixed(1)}M</td>
+              <td style="font-family:var(--font-mono);font-size:12px;color:#a3d44a;">$${g.actual.toFixed(1)}M</td>
+              <td style="font-family:var(--font-mono);font-size:12px;color:var(--accent2);">$${g.targetVal.toFixed(1)}M</td>
+              <td style="font-family:var(--font-mono);font-size:12px;color:#e74c3c;">${gap >= 0 ? '+' : ''}$${gap}M</td>
+              <td>${ragBadge(rag)}</td>
+            </tr>
+          `;
+        }).join('')}
+      </tbody>
+    </table>
+    </div>
+  `;
+}
+
+function openGapEditor() {
+  document.getElementById('gap-editor-body').innerHTML = gapData.map((g, i) => `
+    <div style="padding:14px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);margin-bottom:10px;">
+      <div style="font-weight:700;font-size:12px;margin-bottom:10px;">${g.area}</div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Actual ($M)</label><input type="number" id="ge-actual-${i}" value="${g.actual}" step="0.1"></div>
+        <div class="form-group"><label class="form-label">Target ($M)</label><input type="number" id="ge-target-${i}" value="${g.targetVal}" step="0.1"></div>
+      </div>
+    </div>
+  `).join('');
+  openModal('modal-gap');
+}
+
+function saveGap() {
+  gapData.forEach((g, i) => {
+    g.actual    = parseFloat(document.getElementById(`ge-actual-${i}`).value) || g.actual;
+    g.targetVal = parseFloat(document.getElementById(`ge-target-${i}`).value) || g.targetVal;
+  });
+  renderGapAnalysis(); closeModal('modal-gap'); showToast('Gap targets updated ✓');
+}
+
+// ════════════════════════════════════════════
+// BLOCKERS & AGENDA
+// ════════════════════════════════════════════
+function renderBlockers() {
+  const priColors = { Critical:'#e74c3c', Standard:'#ffb900', Low:'#50b3f0' };
+  document.getElementById('blockers-list').innerHTML = blockers.map((b, i) => `
+    <div class="action-item" style="${b.done?'opacity:0.4;':''}">
+      <div class="action-icon" style="background:rgba(${b.priority==='Critical'?'231,76,60':'255,185,0'},0.15);font-size:16px;">
+        ${b.done ? '✓' : b.priority === 'Critical' ? '🚨' : '⚠️'}
+      </div>
+      <div class="action-body"><div class="action-title" style="${b.done?'text-decoration:line-through;':''}">${b.text}</div></div>
+      <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end;">
+        <span style="font-family:var(--font-mono);font-size:10px;color:${priColors[b.priority]};">${b.priority}</span>
+        <div style="display:flex;gap:4px;">
+          <button onclick="resolveBlocker(${i})" class="stat-icon-btn">✓</button>
+          <button onclick="removeBlocker(${i})" class="stat-icon-btn btn-danger">✕</button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function addBlocker() {
+  const t = document.getElementById('new-blocker').value.trim();
+  if(!t) return;
+  blockers.unshift({ text:t, priority:document.getElementById('blocker-priority').value, done:false });
+  renderBlockers(); document.getElementById('new-blocker').value = '';
+  showToast('Blocker logged ✓');
+}
+
+function resolveBlocker(i) { blockers[i].done = true; renderBlockers(); showToast('Blocker resolved ✓'); }
+function removeBlocker(i) { blockers.splice(i,1); renderBlockers(); }
+
+function renderAgenda() {
+  document.getElementById('agenda-list').innerHTML = agenda.map((a, i) => `
+    <div class="action-item" style="margin-bottom:8px;">
+      <div style="font-family:var(--font-mono);font-size:11px;color:var(--text-muted);width:20px;flex-shrink:0;">${String(i+1).padStart(2,'0')}</div>
+      <div class="action-body"><div style="font-size:13px;">${a}</div></div>
+      <button onclick="removeAgendaItem(${i})" class="stat-icon-btn btn-danger">✕</button>
+    </div>
+  `).join('');
+}
+
+function addAgendaItem() {
+  const v = document.getElementById('new-agenda').value.trim();
+  if(!v) return;
+  agenda.push(v); renderAgenda();
+  document.getElementById('new-agenda').value = '';
+}
+
+function removeAgendaItem(i) { agenda.splice(i,1); renderAgenda(); }
+
+// ════════════════════════════════════════════
+// QBR EXPORT
+// ════════════════════════════════════════════
+function exportQBR() {
+  showToast('Generating QBR summary...');
+  setTimeout(() => {
+    const w = window.open('', '_blank');
+    w.document.write(`
+      <html><head><title>QBR Summary</title>
+      <style>
+        body{font-family:'Segoe UI',sans-serif;max-width:860px;margin:40px auto;color:#1a1a1a;line-height:1.6;padding:0 20px}
+        h1{color:#0078d4;border-bottom:3px solid #0078d4;padding-bottom:10px;font-size:28px}
+        h2{color:#0078d4;margin-top:32px;font-size:16px;letter-spacing:0.05em;text-transform:uppercase}
+        table{width:100%;border-collapse:collapse;margin:16px 0}
+        th{background:#0078d4;color:white;padding:10px 12px;text-align:left;font-size:12px;letter-spacing:0.05em}
+        td{padding:10px 12px;border-bottom:1px solid #eee;font-size:13px}
+        .green{color:#7fba00;font-weight:700} .amber{color:#ffb900;font-weight:700} .red{color:#e74c3c;font-weight:700}
+        .meta{display:flex;gap:24px;background:#f5f5f5;padding:14px 16px;border-radius:8px;margin:20px 0;font-size:13px}
+        .meta strong{color:#0078d4}
+        .footer{margin-top:48px;padding-top:16px;border-top:1px solid #eee;color:#888;font-size:11px}
+      </style></head><body>
+      <h1>Quarterly Business Review — SME&C Partner Summary</h1>
+      <div class="meta">
+        <div><strong>Partner:</strong> Avanade / Accenture</div>
+        <div><strong>Date:</strong> ${new Date().toLocaleDateString('en-US',{month:'long',year:'numeric'})}</div>
+        <div><strong>PDM:</strong> [Your Name]</div>
+      </div>
+      <h2>KPI Summary</h2>
+      <table><tr><th>Metric</th><th>Baseline</th><th>Current</th><th>Target</th></tr>
+      ${stats.map(s=>`<tr><td>${s.label}</td><td style="color:#888;">${s.init}</td><td><strong>${s.value}</strong></td><td style="color:#0078d4;">${s.target}</td></tr>`).join('')}
+      </table>
+      <h2>QBR Block Detail</h2>
+      ${qbrBlocks.map(b=>`
+        <strong>${b.title}</strong>
+        <table><tr><th>Metric</th><th>Baseline</th><th>Current</th><th>Target</th></tr>
+        ${b.metrics.map(m=>`<tr><td>${m.label}</td><td style="color:#888;">${m.init||'—'}</td><td><strong>${m.value}</strong></td><td style="color:#0078d4;">${m.target||'—'}</td></tr>`).join('')}
+        </table>
+      `).join('')}
+      <h2>Gap Analysis by Solution Area</h2>
+      <table><tr><th>Area</th><th>Actual ($M)</th><th>Target ($M)</th><th>Gap</th><th>Status</th></tr>
+      ${gapData.map(g=>{const gap=(g.actual-g.targetVal).toFixed(1);const rag=computeGapRAG(g.actual,g.targetVal);return`<tr><td>${g.area}</td><td>$${g.actual.toFixed(1)}M</td><td>$${g.targetVal.toFixed(1)}M</td><td class="${rag}">${gap>=0?'+':''}$${gap}M</td><td class="${rag}">${rag.toUpperCase()}</td></tr>`}).join('')}
+      </table>
+      <h2>Open Blockers</h2>
+      <ul>${blockers.filter(b=>!b.done).map(b=>`<li><strong style="color:${b.priority==='Critical'?'#e74c3c':'#ffb900'}">${b.priority}:</strong> ${b.text}</li>`).join('')}</ul>
+      <h2>Next QBR Agenda</h2>
+      <ol>${agenda.map(a=>`<li>${a}</li>`).join('')}</ol>
+      <div class="footer">Generated by PDM Partner Intelligence Hub — ${new Date().toLocaleString()}</div>
+      </body></html>
+    `);
+    w.document.close();
+  }, 400);
+}
+
+// ════════════════════════════════════════════
+// AI READINESS
+// ════════════════════════════════════════════
+const READINESS_ACTIONS = {
+  sales:[
+    {score:[1,4],icon:'🎓',title:'Enrol in Microsoft AI Cloud Partner Program sales training',desc:'Mandatory baseline for all field sellers — Copilot for M365 and Azure AI sales plays.',tag:'Immediate'},
+    {score:[5,7],icon:'🎯',title:'Run Copilot sales play workshops with top 20 sellers',desc:'Focus on value articulation, ROI calculators, and competitive positioning against Google Workspace AI.',tag:'This Quarter'},
+    {score:[8,10],icon:'🚀',title:'Activate co-sell motion — nominate AI Champions per territory',desc:'Establish an internal AI champion network to cascade best practice and accelerate deal velocity.',tag:'Optimise'},
+  ],
+  tech:[
+    {score:[1,4],icon:'📋',title:'Map current cert coverage vs Microsoft AI certification matrix',desc:'Identify gap: Azure AI Engineer, Copilot Studio, Power Platform AI Builder certifications critical.',tag:'Immediate'},
+    {score:[5,7],icon:'🏆',title:'Launch structured cert sprint with MCI funding',desc:'Use Microsoft Competency Incentives to subsidise certification paths for 50+ engineers this quarter.',tag:'This Quarter'},
+    {score:[8,10],icon:'⭐',title:'Pursue AI Cloud Partner Program designation',desc:'Advanced specialisations in AI & ML or Intelligent Automation signal elite partner status to enterprise customers.',tag:'Optimise'},
+  ],
+  pipeline:[
+    {score:[1,4],icon:'🌱',title:'Run joint AI pipeline generation workshop with PDM',desc:'Identify top 10 existing customer accounts with highest Copilot/Azure AI upsell potential.',tag:'Immediate'},
+    {score:[5,7],icon:'🔗',title:'Register all AI deals in Partner Center co-sell',desc:'Ensure 100% of AI opportunities are co-sell registered to unlock deal support and prioritisation from Microsoft field.',tag:'This Quarter'},
+    {score:[8,10],icon:'📊',title:'Implement weekly AI pipeline cadence with Microsoft PDM',desc:'Structured pipeline reviews focused on velocity, blockers, and consumption conversion from commit to active.',tag:'Optimise'},
+  ],
+  consumption:[
+    {score:[1,4],icon:'🔌',title:'Identify 3 lighthouse Copilot customers for activation',desc:'Focus on quick wins: existing M365 E3/E5 customers where Copilot seats are licensed but inactive.',tag:'Immediate'},
+    {score:[5,7],icon:'📱',title:'Launch Copilot adoption programme with customer success play',desc:'Deploy structured 30-60-90 day adoption journeys with usage telemetry and executive business reviews.',tag:'This Quarter'},
+    {score:[8,10],icon:'🎯',title:'Build Azure AI consumption dashboard for exec visibility',desc:'Create real-time consumption visibility for partner leadership — drives accountability and surfaces upsell signals.',tag:'Optimise'},
+  ],
+};
+
+function updateReadiness() {
+  const dims = ['sales','tech','pipeline','consumption'];
+  dims.forEach(d => {
+    const v = parseInt(document.getElementById('range-'+d).value);
+    readinessScores[d] = v;
+    document.getElementById('disp-'+d).textContent = v;
+    document.getElementById('score-'+d).textContent = v+'/10';
+    const c = v<=4?'#e74c3c':v<=7?'#ffb900':'#7fba00';
+    document.getElementById('score-'+d).style.color = c;
+  });
+  const avg = dims.reduce((s,d) => s+readinessScores[d], 0) / 4;
+  const tierEl = document.getElementById('tier-output');
+  if(avg<=4){ tierEl.textContent='🔴 Foundational'; tierEl.className='tier-badge tier-foundational'; }
+  else if(avg<=7){ tierEl.textContent='⚡ Developing'; tierEl.className='tier-badge tier-developing'; }
+  else{ tierEl.textContent='🚀 Advanced'; tierEl.className='tier-badge tier-advanced'; }
+  document.getElementById('readiness-output-bars').innerHTML = dims.map(d => {
+    const v=readinessScores[d]; const c=v<=4?'#e74c3c':v<=7?'#ffb900':'#7fba00';
+    const labels={sales:'Sales Capability',tech:'Technical Certs',pipeline:'AI Pipeline',consumption:'Consumption'};
+    return `<div class="progress-wrap" style="margin-bottom:14px;">
+      <div class="progress-label"><span class="name" style="font-size:12px;">${labels[d]}</span><span class="pct">${v}/10</span></div>
+      <div class="progress-track"><div class="progress-fill" style="width:${v*10}%;background:${c};"></div></div>
+    </div>`;
+  }).join('');
+  const sorted = [...dims].sort((a,b) => readinessScores[a]-readinessScores[b]);
+  document.getElementById('action-plan').innerHTML = sorted.map(d => {
+    const v=readinessScores[d];
+    const action=READINESS_ACTIONS[d].find(a => v>=a.score[0]&&v<=a.score[1]);
+    if(!action) return '';
+    return `<div class="action-item"><div class="action-icon">${action.icon}</div><div class="action-body"><div class="action-title">${action.title}</div><div class="action-desc">${action.desc}</div></div><span class="action-tag">${action.tag}</span></div>`;
+  }).join('');
+}
+
+function selectReadinessDim(dim) {
+  document.querySelectorAll('.readiness-card').forEach(c => c.classList.remove('selected'));
+  document.getElementById('rc-'+dim).classList.add('selected');
+}
+
+function exportReadiness() { showToast('Partner readiness report generated ✓'); }
+
+// ════════════════════════════════════════════
+// GTM PLANNER
+// ════════════════════════════════════════════
+const GTM_STAGES = [
+  {id:'readiness',label:'01 Readiness',icon:'🎓',desc:'Align partner on campaign objectives, solution areas, and required enablement before launch.'},
+  {id:'activation',label:'02 Activation',icon:'⚡',desc:'Launch co-sell motion — register opportunities, brief field teams, activate incentives.'},
+  {id:'landing',label:'03 Field Landing',icon:'🎯',desc:'Drive internal Avanade/Accenture awareness — proposals in field, country reviews, deal coaching.'},
+  {id:'review',label:'04 Review',icon:'📊',desc:'Track outcomes in QBR — close gaps, update account plan, plan next campaign wave.'},
+];
+
+const STAGE_CHECKLISTS = {
+  readiness:['Define target solution areas and ICP','Confirm PDM and partner exec sponsors','Map incentives: MCI, co-op, co-sell benefits','Complete partner sales enablement session','Document partner field team contacts by region'],
+  activation:['Register co-sell opportunities in Partner Center','Brief Avanade/Accenture country leads','Activate MCI incentive claims','Create campaign one-pager for field use','Set pipeline target and KPIs'],
+  landing:['Deliver internal partner webinar / town hall','Publish campaign assets to partner portal','Complete country-level deal reviews','Coach top 5 deals through proposal stage','Run competitive battlecard session'],
+  review:['Hold QBR with partner exec team','Measure pipeline conversion vs target','Document lessons learned','Update account plan for next quarter','Celebrate wins and recognise partner champions'],
+};
+
+let stageChecked = { readiness:[], activation:[], landing:[], review:[] };
+
+function renderGTMStages() {
+  const colors = ['#0078d4','#7fba00','#50e6ff','#ffb900'];
+  document.getElementById('gtm-stages').innerHTML = GTM_STAGES.map((s, i) => {
+    const done=stageChecked[s.id].length, total=STAGE_CHECKLISTS[s.id].length;
+    const pct=Math.round(done/total*100);
+    return `
+      <div onclick="selectStage('${s.id}')" style="background:var(--surface2);border:1px solid ${s.id===activeStage?colors[i]:'var(--border)'};border-radius:var(--radius-sm);padding:20px;cursor:pointer;transition:all 0.2s;${s.id===activeStage?'background:rgba(255,255,255,0.04);':''}">
+        <div style="font-size:24px;margin-bottom:8px;">${s.icon}</div>
+        <div style="font-size:12px;font-weight:700;letter-spacing:0.06em;margin-bottom:6px;">${s.label}</div>
+        <div style="font-size:11px;color:var(--text-muted);margin-bottom:12px;line-height:1.4;">${s.desc}</div>
+        <div style="height:3px;background:var(--surface);border-radius:2px;overflow:hidden;">
+          <div style="height:100%;width:${pct}%;background:${colors[i]};transition:width 0.5s;"></div>
+        </div>
+        <div style="margin-top:6px;font-family:var(--font-mono);font-size:10px;color:var(--text-muted);">${done}/${total} complete</div>
+      </div>
+    `;
+  }).join('');
+  const stage = GTM_STAGES.find(s => s.id===activeStage);
+  const checks = STAGE_CHECKLISTS[activeStage];
+  document.getElementById('gtm-stage-detail').innerHTML = `
+    <div style="margin-top:8px;padding-top:24px;border-top:1px solid var(--border);">
+      <div class="card-title" style="margin-bottom:16px;">${stage.icon} ${stage.label} — Action Checklist</div>
+      ${checks.map((c,i) => {
+        const checked=stageChecked[activeStage].includes(i);
+        return `
+          <div class="action-item" onclick="toggleCheck('${activeStage}',${i})" style="cursor:pointer;${checked?'opacity:0.5;':''}margin-bottom:8px;">
+            <div style="width:22px;height:22px;border:2px solid ${checked?'#7fba00':'var(--border-bright)'};border-radius:5px;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:${checked?'rgba(127,186,0,0.15)':'transparent'};transition:all 0.2s;">
+              ${checked?'<span style="color:#7fba00;font-size:14px;">✓</span>':''}
+            </div>
+            <div class="action-body"><div style="font-size:13px;${checked?'text-decoration:line-through;':''}">${c}</div></div>
+          </div>
+        `;
+      }).join('')}
+    </div>
+  `;
+}
+
+function selectStage(id) { activeStage=id; renderGTMStages(); }
+function toggleCheck(stage, i) { const a=stageChecked[stage]; const idx=a.indexOf(i); idx>-1?a.splice(idx,1):a.push(i); renderGTMStages(); }
+function newCampaign() { Object.keys(stageChecked).forEach(k=>stageChecked[k]=[]); activeStage='readiness'; renderGTMStages(); showToast('New campaign started ✓'); }
+
+const INCENTIVES = [
+  {name:'MCI — Marketplace Incentives',desc:'Claim per qualified opportunity registered in Partner Center',checked:false},
+  {name:'Co-op Funds',desc:'Co-marketing funds tied to earned revenue — up to 3% of partner-driven revenue',checked:false},
+  {name:'Azure Consumed Revenue (ACR)',desc:'Track and report Azure consumption — triggers co-sell prioritisation',checked:false},
+  {name:'Solution Designations',desc:'Verify partner has relevant AI / Modern Workplace solution designation',checked:false},
+  {name:'FastTrack for Partners',desc:'Engage FastTrack resources for Copilot deployment support',checked:false},
+  {name:'Partner Centre Co-sell Status',desc:'Ensure Co-sell Ready and IP Co-sell Eligible status is current',checked:false},
+];
+
+function renderIncentives() {
+  document.getElementById('incentive-checklist').innerHTML = INCENTIVES.map((item, i) => `
+    <div class="action-item" onclick="toggleIncentive(${i})" style="cursor:pointer;${item.checked?'opacity:0.5;':''}margin-bottom:8px;">
+      <div style="width:22px;height:22px;border:2px solid ${item.checked?'#7fba00':'var(--border-bright)'};border-radius:5px;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:${item.checked?'rgba(127,186,0,0.15)':'transparent'};transition:all 0.2s;flex-shrink:0;">
+        ${item.checked?'<span style="color:#7fba00;font-size:14px;">✓</span>':''}
+      </div>
+      <div class="action-body"><div class="action-title">${item.name}</div><div class="action-desc">${item.desc}</div></div>
+    </div>
+  `).join('');
+}
+
+function toggleIncentive(i) { INCENTIVES[i].checked=!INCENTIVES[i].checked; renderIncentives(); }
+
+let milestones = [
+  'Kick-off call with partner exec team — Week 1',
+  'Field activation webinar — Week 3',
+  'Pipeline checkpoint with PDM — Week 6',
+  'Country deal reviews — Week 8',
+  'QBR presentation — End of Quarter',
+];
+
+function renderMilestones() {
+  document.getElementById('milestone-list').innerHTML = milestones.map((m, i) => `
+    <div class="action-item" style="margin-bottom:8px;">
+      <div style="font-family:var(--font-mono);font-size:11px;color:var(--text-muted);width:24px;flex-shrink:0;">${i+1}</div>
+      <div class="action-body"><div style="font-size:13px;">${m}</div></div>
+      <button onclick="removeMilestone(${i})" class="stat-icon-btn btn-danger">✕</button>
+    </div>
+  `).join('');
+}
+
+function addMilestone() { const v=document.getElementById('new-milestone').value.trim(); if(!v) return; milestones.push(v); renderMilestones(); document.getElementById('new-milestone').value=''; }
+function removeMilestone(i) { milestones.splice(i,1); renderMilestones(); }
+function exportGTM() { showToast('GTM plan exported ✓'); }
+
+// ════════════════════════════════════════════
+// DATA SOURCE CONNECTORS
+// ════════════════════════════════════════════
+const dsState = { dynamics:'disconnected', sharepoint:'disconnected', saas:'disconnected' };
+
+function testConnection(source) {
+  showToast('Testing connection...');
+  const statusEl = document.getElementById(source==='dynamics'?'dyn-status':source==='sharepoint'?'sp-status':'saas-status');
+  statusEl.textContent = 'Testing...'; statusEl.className = 'ds-status syncing';
+  setTimeout(() => {
+    statusEl.textContent = 'Reachable ✓'; statusEl.className = 'ds-status connected';
+    showToast('Connection test successful — click Connect to sync data ✓');
+    setTimeout(() => {
+      if(dsState[source] !== 'connected') { statusEl.textContent = 'Disconnected'; statusEl.className = 'ds-status disconnected'; }
+    }, 3000);
+  }, 1800);
+}
+
+function connectSource(source) {
+  const sourceId = source === 'dynamics' ? 'ds-dynamics' : source === 'sharepoint' ? 'ds-sharepoint' : 'ds-saas';
+  const statusEl = document.getElementById(source==='dynamics'?'dyn-status':source==='sharepoint'?'sp-status':'saas-status');
+  const syncEl   = document.getElementById(source==='dynamics'?'dyn-last-sync':source==='sharepoint'?'sp-last-sync':'saas-last-sync');
+  statusEl.textContent = 'Syncing...'; statusEl.className = 'ds-status syncing';
+  showToast('Connecting and syncing data source...');
+  setTimeout(() => {
+    dsState[source] = 'connected';
+    document.getElementById(sourceId).classList.add('connected');
+    statusEl.textContent = 'Connected'; statusEl.className = 'ds-status connected';
+    syncEl.textContent = 'Last synced: just now';
+    updateNavConnectorBtn();
+    showToast(`${source==='dynamics'?'Dynamics 365':source==='sharepoint'?'SharePoint':'SaaS API'} connected — data refreshed ✓`);
+  }, 2200);
+}
+
+function updateNavConnectorBtn() {
+  const anyConnected = Object.values(dsState).some(v => v === 'connected');
+  const btn = document.getElementById('ds-nav-btn');
+  if(anyConnected) {
+    btn.classList.add('connected');
+    const count = Object.values(dsState).filter(v=>v==='connected').length;
+    btn.querySelector('.connector-dot').style.background = 'var(--green)';
+    btn.childNodes[2].textContent = ` ${count} Source${count>1?'s':''} Live`;
+  }
+}
+
+// ════════════════════════════════════════════
+// INIT
+// ════════════════════════════════════════════
+renderStats();
+renderDeals('all');
+renderConsumption();
+renderQBRBlocks();
+renderGapAnalysis();
+renderBlockers();
+renderAgenda();
+updateReadiness();
+renderGTMStages();
+renderIncentives();
+renderMilestones();
+</script>
+</body>
+</html>
