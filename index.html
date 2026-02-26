@@ -2,7 +2,9 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#0a0a14">
 <meta name="description" content="PDM Partner Intelligence Hub — Co-sell pipeline, QBR governance, and AI readiness in one place.">
 <title>PDM Partner Intelligence Hub</title>
@@ -306,6 +308,133 @@ select option{background:var(--surface2);color:var(--text)}
 ::-webkit-scrollbar{width:6px}
 ::-webkit-scrollbar-track{background:transparent}
 ::-webkit-scrollbar-thumb{background:var(--surface2);border-radius:3px}
+
+/* ══════════════════════════════════════════
+   MOBILE — Safari iOS & Edge
+   ══════════════════════════════════════════ */
+
+/* Hamburger button — hidden on desktop */
+.nav-hamburger{display:none;background:none;border:1px solid var(--border-bright);border-radius:6px;color:var(--text-muted);width:36px;height:36px;align-items:center;justify-content:center;cursor:pointer;font-size:18px;flex-shrink:0;-webkit-tap-highlight-color:transparent}
+
+/* Mobile controls drawer — hidden on desktop */
+.mobile-drawer{display:none;position:fixed;inset:0;z-index:400;pointer-events:none}
+.mobile-drawer-backdrop{position:absolute;inset:0;background:var(--overlay);opacity:0;transition:opacity 0.25s;pointer-events:none}
+.mobile-drawer.open .mobile-drawer-backdrop{opacity:1;pointer-events:all}
+.mobile-drawer-sheet{position:absolute;top:64px;right:0;width:min(320px,100vw);background:var(--surface);border-left:1px solid var(--border-bright);border-bottom:1px solid var(--border-bright);border-bottom-left-radius:var(--radius);padding:20px;transform:translateX(110%);transition:transform 0.28s cubic-bezier(0.4,0,0.2,1);pointer-events:all;box-shadow:-8px 8px 32px var(--shadow)}
+.mobile-drawer.open .mobile-drawer-sheet{transform:translateX(0)}
+.mobile-drawer-section{margin-bottom:20px}
+.mobile-drawer-label{font-family:var(--font-mono);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-muted);margin-bottom:10px}
+.mobile-drawer-row{display:flex;align-items:center;gap:8px}
+
+/* Bottom tab bar — hidden on desktop */
+.bottom-tab-bar{display:none;position:fixed;bottom:0;left:0;right:0;z-index:200;background:var(--nav-bg);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid var(--border);padding-bottom:env(safe-area-inset-bottom,0px)}
+.bottom-tab-bar-inner{display:flex;align-items:stretch}
+.bottom-tab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:8px 4px;cursor:pointer;background:none;border:none;color:var(--text-muted);font-family:var(--font-display);font-size:9px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;-webkit-tap-highlight-color:transparent;transition:color 0.15s;min-height:52px}
+.bottom-tab-icon{font-size:20px;line-height:1;display:block}
+.bottom-tab.active{color:var(--accent2)}
+html[data-theme="day"] .bottom-tab.active{color:var(--accent)}
+.bottom-tab-label{font-size:9px;line-height:1}
+
+@media (max-width: 768px) {
+
+  /* ── NAV ── */
+  nav{padding:0 16px;height:56px}
+  .nav-tabs{display:none}          /* replaced by bottom tab bar */
+  .nav-right{display:none}         /* moved into hamburger drawer */
+  .nav-badge{display:none}
+  .nav-logo{font-size:calc(var(--fs)*11px)}
+  .nav-hamburger{display:flex}
+
+  /* ── BOTTOM TAB BAR ── */
+  .bottom-tab-bar{display:block}
+
+  /* ── MAIN ── */
+  main{padding:20px 16px;padding-bottom:calc(72px + env(safe-area-inset-bottom,0px))}
+
+  /* ── MOBILE DRAWER ── */
+  .mobile-drawer{display:block}
+
+  /* ── DS PANEL ── */
+  .ds-panel{top:56px;width:100vw;border-left:none;border-top:1px solid var(--border-bright)}
+
+  /* ── PAGE HEADER ── */
+  .page-header{flex-direction:column;gap:12px;margin-bottom:24px}
+  .page-header-text h1{font-size:calc(var(--fs)*26px)}
+  .page-header-text p{font-size:calc(var(--fs)*13px)}
+  .page-header-actions{gap:6px}
+  .page-header-actions .btn{font-size:calc(var(--fs)*10px);padding:6px 10px}
+
+  /* ── STATS ROW ── */
+  .stats-row{grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+  .stat-value{font-size:calc(var(--fs)*22px)}
+  .stat-targets{display:none}   /* too cramped on small cards */
+  /* always show stat actions on touch */
+  .stat-card-actions{display:flex !important}
+  .stat-icon-btn{min-width:28px;min-height:28px;padding:4px 6px}
+
+  /* ── CARDS ── */
+  .card{padding:18px 14px}
+  .card-header{margin-bottom:16px}
+  .card-actions{gap:4px}
+  .card-actions .btn{font-size:calc(var(--fs)*10px);padding:5px 8px}
+
+  /* ── TWO-COL ── */
+  .two-col{grid-template-columns:1fr !important}
+
+  /* ── QBR GRID ── */
+  .qbr-grid{grid-template-columns:1fr}
+
+  /* ── SOLUTION PILLS ── */
+  .solution-pills{gap:6px;overflow-x:auto;flex-wrap:nowrap;padding-bottom:4px;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+  .solution-pills::-webkit-scrollbar{display:none}
+  .solution-pill{flex-shrink:0;font-size:calc(var(--fs)*10px);padding:5px 12px}
+
+  /* ── DEAL TABLE — scroll horizontally ── */
+  .deal-table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:0 -14px;padding:0 14px}
+  .deal-table th,.deal-table td{white-space:nowrap}
+  /* always show row actions on touch */
+  .tbl-actions{opacity:1 !important}
+
+  /* ── FORMS ── */
+  .form-row{grid-template-columns:1fr}
+  .form-row-3{grid-template-columns:1fr}
+  input[type=text],input[type=number],select,textarea{font-size:16px !important} /* prevent iOS zoom */
+
+  /* ── GTM STAGES GRID ── */
+  #gtm-stages{grid-template-columns:1fr 1fr !important;gap:8px}
+
+  /* ── READINESS GRID ── */
+  .readiness-grid{grid-template-columns:1fr}
+
+  /* ── MODALS ── */
+  .modal-overlay{align-items:flex-end;padding:0}
+  .modal{max-width:100%;border-radius:var(--radius) var(--radius) 0 0;padding:24px 20px;padding-bottom:calc(24px + env(safe-area-inset-bottom,0px));max-height:88vh}
+
+  /* ── EXPORT BANNER ── */
+  .export-banner{flex-direction:column;align-items:flex-start;padding:18px}
+
+  /* ── TOAST ── */
+  .toast{left:16px;right:16px;bottom:calc(72px + env(safe-area-inset-bottom,0px) + 8px);max-width:none;font-size:calc(var(--fs)*12px)}
+
+  /* ── QBR METRIC ACTIONS — always visible on touch ── */
+  .qbr-metric .metric-actions{display:flex !important}
+
+  /* ── BUTTONS — bigger touch targets ── */
+  .btn{min-height:40px}
+  .btn-sm{min-height:36px}
+
+  /* ── TIER BADGE ── */
+  .tier-badge{font-size:calc(var(--fs)*12px);padding:10px 14px}
+
+  /* ── ASSESSMENT labels ── */
+  .assessment-label .dim-score{font-size:calc(var(--fs)*20px)}
+}
+
+@media (max-width: 400px) {
+  .stats-row{grid-template-columns:1fr}
+  #gtm-stages{grid-template-columns:1fr !important}
+  .page-header-text h1{font-size:calc(var(--fs)*22px)}
+}
 </style>
 </head>
 <body>
@@ -318,6 +447,7 @@ select option{background:var(--surface2);color:var(--text)}
       PDM Partner Hub
       <span class="nav-badge">// SME&C</span>
     </div>
+    <button class="nav-hamburger" onclick="toggleMobileDrawer()" aria-label="Menu">☰</button>
   </div>
   <div class="nav-tabs">
     <button class="nav-tab active" onclick="showSection('pipeline',this)">Pipeline</button>
@@ -383,7 +513,7 @@ select option{background:var(--surface2);color:var(--text)}
         <button class="btn btn-ghost btn-sm" onclick="openDealModal(null)">+ Add Deal</button>
       </div>
     </div>
-    <div style="overflow-x:auto;">
+    <div class="deal-table-wrap">
       <table class="deal-table">
         <thead>
           <tr>
@@ -876,6 +1006,66 @@ select option{background:var(--surface2);color:var(--text)}
   </div>
 </div>
 
+<!-- ══════════════════════ MOBILE DRAWER ══════════════════════ -->
+<div class="mobile-drawer" id="mobile-drawer">
+  <div class="mobile-drawer-backdrop" onclick="toggleMobileDrawer()"></div>
+  <div class="mobile-drawer-sheet">
+    <div class="mobile-drawer-section">
+      <div class="mobile-drawer-label">Theme</div>
+      <div class="mobile-drawer-row">
+        <div class="theme-switcher" style="height:36px;">
+          <button class="theme-btn active" id="m-theme-night" onclick="setTheme('night')" style="width:36px;height:36px;" title="Night">🌙</button>
+          <div class="theme-btn-sep"></div>
+          <button class="theme-btn" id="m-theme-day" onclick="setTheme('day')" style="width:36px;height:36px;" title="Day">☀️</button>
+          <div class="theme-btn-sep"></div>
+          <button class="theme-btn" id="m-theme-system" onclick="setTheme('system')" style="width:36px;height:36px;" title="System">⚙️</button>
+        </div>
+      </div>
+    </div>
+    <div class="mobile-drawer-section">
+      <div class="mobile-drawer-label">Font Size</div>
+      <div class="mobile-drawer-row">
+        <div class="font-scaler" style="height:36px;flex:1;">
+          <button class="font-scaler-btn" id="m-fs-minus" onclick="adjustFontSize(-1)" style="width:44px;height:36px;font-size:20px;">−</button>
+          <div class="font-scaler-sep"></div>
+          <span class="font-scaler-label" id="m-font-size-label" style="flex:1;font-size:13px;">100%</span>
+          <div class="font-scaler-sep"></div>
+          <button class="font-scaler-btn" id="m-fs-plus" onclick="adjustFontSize(1)" style="width:44px;height:36px;font-size:20px;">+</button>
+        </div>
+      </div>
+    </div>
+    <div class="mobile-drawer-section">
+      <div class="mobile-drawer-label">Data Sources</div>
+      <button class="connector-btn" id="m-ds-nav-btn" onclick="toggleMobileDrawer();toggleDSPanel();" style="width:100%;justify-content:center;">
+        <span class="connector-dot"></span>
+        Data Sources
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════ BOTTOM TAB BAR ══════════════════════ -->
+<div class="bottom-tab-bar">
+  <div class="bottom-tab-bar-inner">
+    <button class="bottom-tab active" id="btab-pipeline" onclick="showSection('pipeline',null);setActiveBottomTab('pipeline')">
+      <span class="bottom-tab-icon">📊</span>
+      <span class="bottom-tab-label">Pipeline</span>
+    </button>
+    <button class="bottom-tab" id="btab-qbr" onclick="showSection('qbr',null);setActiveBottomTab('qbr')">
+      <span class="bottom-tab-icon">📋</span>
+      <span class="bottom-tab-label">QBR</span>
+    </button>
+    <button class="bottom-tab" id="btab-readiness" onclick="showSection('readiness',null);setActiveBottomTab('readiness')">
+      <span class="bottom-tab-icon">🤖</span>
+      <span class="bottom-tab-label">AI Ready</span>
+    </button>
+    <button class="bottom-tab" id="btab-gtm" onclick="showSection('gtm',null);setActiveBottomTab('gtm')">
+      <span class="bottom-tab-icon">🎯</span>
+      <span class="bottom-tab-label">GTM</span>
+    </button>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script>
@@ -976,6 +1166,9 @@ function showSection(id, el) {
   document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
   document.getElementById('section-' + id).classList.add('active');
   if(el) el.classList.add('active');
+  setActiveBottomTab(id);
+  // close mobile drawer if open
+  document.getElementById('mobile-drawer').classList.remove('open');
 }
 
 function showToast(msg) {
@@ -1737,6 +1930,66 @@ function setTheme(mode) {
 
 function onSystemChange(e) {
   if (currentTheme === 'system') applyThemeToHTML(e.matches ? 'day' : 'night');
+}
+
+// ════════════════════════════════════════════
+// MOBILE — drawer, bottom tabs, label sync
+// ════════════════════════════════════════════
+function toggleMobileDrawer() {
+  document.getElementById('mobile-drawer').classList.toggle('open');
+}
+
+function setActiveBottomTab(id) {
+  document.querySelectorAll('.bottom-tab').forEach(t => t.classList.remove('active'));
+  const el = document.getElementById('btab-' + id);
+  if (el) el.classList.add('active');
+}
+
+// Keep mobile font label in sync with desktop label
+const _origApplyFontScale = applyFontScale;
+// Patch applyFontScale to also update mobile label
+function applyFontScale() {
+  document.documentElement.style.setProperty('--fs', fontScale);
+  const pct = Math.round(fontScale * 100);
+  ['font-size-label','m-font-size-label'].forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.textContent = pct + '%';
+    el.style.color = 'var(--accent2)';
+    clearTimeout(el._t);
+    el._t = setTimeout(() => { el.style.color = ''; }, 350);
+  });
+  ['fs-minus','m-fs-minus'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.opacity = fontScale <= FS_MIN ? '0.3' : '1';
+  });
+  ['fs-plus','m-fs-plus'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.opacity = fontScale >= FS_MAX ? '0.3' : '1';
+  });
+}
+
+// Sync mobile theme buttons with desktop setTheme
+const _origSetTheme = setTheme;
+function setTheme(mode) {
+  currentTheme = mode;
+  if (systemQuery) { systemQuery.removeEventListener('change', onSystemChange); systemQuery = null; }
+  // Update ALL theme buttons (desktop + mobile)
+  ['night','day','system'].forEach(m => {
+    ['theme-','m-theme-'].forEach(pfx => {
+      const el = document.getElementById(pfx + m);
+      if (el) el.classList.toggle('active', m === mode);
+    });
+  });
+  if (mode === 'system') {
+    applyThemeToHTML(resolveSystemTheme());
+    systemQuery = window.matchMedia('(prefers-color-scheme: light)');
+    systemQuery.addEventListener('change', onSystemChange);
+    showToast('Theme: following system setting');
+  } else {
+    applyThemeToHTML(mode);
+    showToast('Theme: ' + (mode === 'day' ? '☀️ Day' : '🌙 Night'));
+  }
 }
 
 // ════════════════════════════════════════════
