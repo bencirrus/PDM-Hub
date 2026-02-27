@@ -1,5 +1,5 @@
 # PDM-Hub
-**A portal for Partner Development Managers (PDMs) built w/Anthropic's Claude**
+**A portal for Partner Development Managers (PDMs) built w/Anthropic's Claude.**
 
 Self-contained, editable, or connect it to Dynamics CRM, SharePoint and other SaaS services through the REST API.
 
