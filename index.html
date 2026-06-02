@@ -538,7 +538,7 @@ html[data-theme="day"] .bottom-tab.active{color:var(--accent)}
       <div class="card-header">
         <div class="card-title">Log New Co-Sell Deal<span>Capture opportunity details</span></div>
       </div>
-      <div class="form-group"><label class="form-label">Deal Name</label><input type="text" id="new-deal-name" placeholder="e.g. Avanade — Contoso M365 Migration"></div>
+      <div class="form-group"><label class="form-label">Deal Name</label><input type="text" id="new-deal-name" placeholder="e.g. Contoso — Contoso M365 Migration"></div>
       <div class="form-row">
         <div class="form-group"><label class="form-label">Solution Area</label>
           <select id="new-deal-area">
@@ -548,7 +548,7 @@ html[data-theme="day"] .bottom-tab.active{color:var(--accent)}
           </select>
         </div>
         <div class="form-group"><label class="form-label">Partner</label>
-          <select id="new-deal-partner"><option>Avanade</option><option>Accenture</option><option>Other SI</option></select>
+          <select id="new-deal-partner"><option>Contoso</option><option>Fabrikam</option><option>Other SI</option></select>
         </div>
       </div>
       <div class="form-row">
@@ -939,7 +939,7 @@ html[data-theme="day"] .bottom-tab.active{color:var(--accent)}
         </select>
       </div>
       <div class="form-group"><label class="form-label">Partner</label>
-        <select id="edit-deal-partner"><option>Avanade</option><option>Accenture</option><option>Other SI</option></select>
+        <select id="edit-deal-partner"><option>Contoso</option><option>Fabrikam</option><option>Other SI</option></select>
       </div>
     </div>
     <div class="form-row">
@@ -1081,13 +1081,13 @@ let stats = [
 ];
 
 let deals = [
-  { name:'Contoso M365 Copilot Rollout', area:'mw', partner:'Avanade', value:2400000, stage:'Proposal', date:'Mar 2026', rag:'green' },
-  { name:'Fabrikam Azure AI Platform', area:'data', partner:'Avanade', value:1800000, stage:'Negotiation', date:'Feb 2026', rag:'amber' },
-  { name:'Northwind Security Modernisation', area:'sec', partner:'Accenture', value:950000, stage:'Qualified', date:'Apr 2026', rag:'green' },
-  { name:'Alpine Dynamics Cloud Migration', area:'infra', partner:'Avanade', value:3100000, stage:'Proposal', date:'Mar 2026', rag:'red' },
-  { name:'Woodgrove D365 Implementation', area:'biz', partner:'Accenture', value:720000, stage:'Prospect', date:'May 2026', rag:'amber' },
-  { name:'Tailspin Sentinel Deployment', area:'sec', partner:'Avanade', value:480000, stage:'Closed Won', date:'Jan 2026', rag:'green' },
-  { name:'Relecloud Fabric & Purview', area:'data', partner:'Avanade', value:1350000, stage:'Proposal', date:'Apr 2026', rag:'green' },
+  { name:'Contoso M365 Copilot Rollout', area:'mw', partner:'Contoso', value:2400000, stage:'Proposal', date:'Mar 2026', rag:'green' },
+  { name:'Fabrikam Azure AI Platform', area:'data', partner:'Contoso', value:1800000, stage:'Negotiation', date:'Feb 2026', rag:'amber' },
+  { name:'Northwind Security Modernisation', area:'sec', partner:'Fabrikam', value:950000, stage:'Qualified', date:'Apr 2026', rag:'green' },
+  { name:'Alpine Dynamics Cloud Migration', area:'infra', partner:'Contoso', value:3100000, stage:'Proposal', date:'Mar 2026', rag:'red' },
+  { name:'Woodgrove D365 Implementation', area:'biz', partner:'Fabrikam', value:720000, stage:'Prospect', date:'May 2026', rag:'amber' },
+  { name:'Tailspin Sentinel Deployment', area:'sec', partner:'Contoso', value:480000, stage:'Closed Won', date:'Jan 2026', rag:'green' },
+  { name:'Relecloud Fabric & Purview', area:'data', partner:'Contoso', value:1350000, stage:'Proposal', date:'Apr 2026', rag:'green' },
 ];
 
 let consumption = [
@@ -1132,7 +1132,7 @@ let qbrBlocks = [
 
 let blockers = [
   { text:'Azure subscription provisioning delay — Fabrikam deal at risk', priority:'Critical', done:false },
-  { text:'MCI incentive approval pending > 3 weeks — Avanade team escalating', priority:'Critical', done:false },
+  { text:'MCI incentive approval pending > 3 weeks — Contoso team escalating', priority:'Critical', done:false },
   { text:'Partner enablement materials not localised for LATAM field team', priority:'Standard', done:false },
 ];
 
@@ -1322,7 +1322,7 @@ function openDealModal(idx) {
     : 'Add Deal<span>Log a new co-sell opportunity</span>';
   document.getElementById('edit-deal-name').value = d ? d.name : '';
   document.getElementById('edit-deal-area').value = d ? d.area : 'infra';
-  document.getElementById('edit-deal-partner').value = d ? d.partner : 'Avanade';
+  document.getElementById('edit-deal-partner').value = d ? d.partner : 'Contoso';
   document.getElementById('edit-deal-value').value = d ? d.value : '';
   document.getElementById('edit-deal-date').value = d ? d.date : '';
   document.getElementById('edit-deal-stage').value = d ? d.stage : 'Prospect';
@@ -1610,7 +1610,7 @@ function exportQBR() {
       </style></head><body>
       <h1>Quarterly Business Review — SME&C Partner Summary</h1>
       <div class="meta">
-        <div><strong>Partner:</strong> Avanade / Accenture</div>
+        <div><strong>Partner:</strong> Contoso / Fabrikam</div>
         <div><strong>Date:</strong> ${new Date().toLocaleDateString('en-US',{month:'long',year:'numeric'})}</div>
         <div><strong>PDM:</strong> [Your Name]</div>
       </div>
@@ -1711,13 +1711,13 @@ function exportReadiness() { showToast('Partner readiness report generated ✓')
 const GTM_STAGES = [
   {id:'readiness',label:'01 Readiness',icon:'🎓',desc:'Align partner on campaign objectives, solution areas, and required enablement before launch.'},
   {id:'activation',label:'02 Activation',icon:'⚡',desc:'Launch co-sell motion — register opportunities, brief field teams, activate incentives.'},
-  {id:'landing',label:'03 Field Landing',icon:'🎯',desc:'Drive internal Avanade/Accenture awareness — proposals in field, country reviews, deal coaching.'},
+  {id:'landing',label:'03 Field Landing',icon:'🎯',desc:'Drive internal Contoso/Fabrikam awareness — proposals in field, country reviews, deal coaching.'},
   {id:'review',label:'04 Review',icon:'📊',desc:'Track outcomes in QBR — close gaps, update account plan, plan next campaign wave.'},
 ];
 
 const STAGE_CHECKLISTS = {
   readiness:['Define target solution areas and ICP','Confirm PDM and partner exec sponsors','Map incentives: MCI, co-op, co-sell benefits','Complete partner sales enablement session','Document partner field team contacts by region'],
-  activation:['Register co-sell opportunities in Partner Center','Brief Avanade/Accenture country leads','Activate MCI incentive claims','Create campaign one-pager for field use','Set pipeline target and KPIs'],
+  activation:['Register co-sell opportunities in Partner Center','Brief Contoso/Fabrikam country leads','Activate MCI incentive claims','Create campaign one-pager for field use','Set pipeline target and KPIs'],
   landing:['Deliver internal partner webinar / town hall','Publish campaign assets to partner portal','Complete country-level deal reviews','Coach top 5 deals through proposal stage','Run competitive battlecard session'],
   review:['Hold QBR with partner exec team','Measure pipeline conversion vs target','Document lessons learned','Update account plan for next quarter','Celebrate wins and recognise partner champions'],
 };
